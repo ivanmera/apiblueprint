@@ -5,12 +5,106 @@ HOST: https://api.myperfit.com/v2
 
 Acá va la intro.
 
+## Group Autenticación
 
-# Group Listas y Contactos
+### Login [POST /login]
+Existen 3 formas de autenticación:
+1. Indicando `user` + `password`. Siendo `user` usuario@cuenta o la dirección de email del usuario.
+2. Indicando `user` + `password` + [`account`] . Siendo `user` el email del usuario. Opcionalmente indicar la cuenta en caso de email duplicado. Ver documentación, sección autenticación.
+3. Indicando únicamente `apikey`.
+
+Para los casos 1 y 2 puede indicarse también `newPassword` en el caso que sea necesaria un actualización de la contraseña.
+
++ Request (application/json)
+
+    + Attributes
+      + user: diego@perfit.com.ar (string, optional) - email o username@account
+      + password: 123 (string, optional)
+      + account (string, optional)
+      + apikey (string, optional)
+      + newPassword (string, optional)
+
++ Response 201 (application/json)
+
+    Sesión iniciada con éxito.
+    
+    + Body
+    
+            {
+                "url": "/login",
+                "success" : true,
+                "data": {
+                    "token": "Shjg23Asd4Sdg8fd23F4eg8rF83kgd2s",
+                    "tokenExpiration": 3600,
+                    "user": "diego",
+                    "account": "perfit",
+                    "acl": {
+                      "perfit": [
+                          "lists:list",
+                          "contacts:list",
+                          "contacts:create",
+                          "contacts:delete",
+                          "contacts:update"
+                      ]
+                    }
+                }
+            }
+
++ Response 401 (application/json)
+
+    El usuario no existe o la contraseña es inválida. 
+    
+    + Body
+    
+            {
+                "url": "/login",
+                "success" : false,
+                  "error": {
+                    "status": 401,
+                    "type": "UNAUTHORIZED",
+                    "userMessage": "The user is not authorized to login"
+                  }
+            }
+
++ Response 409 (application/json)
+
+    Si existe más de un usuario asociados al `email` indicado, se dede incluir `account` en el request. Se indica en `data` el array de cuentas a las cuales se tiene acceso.
+    
+    + Body
+    
+            {
+                "href": "/login",
+                "success": false,
+                "error": { 
+                    "status": 409,
+                    "type": "ACCOUNT_REQUIRED",
+                    "userMessage": "Se debe indicar la cuenta donde iniciar sesión"
+                },
+                "data": ["cuenta1", "cuenta2", "cuenta3", ...]
+            }
+
+### Logout [POST /logout]
+Invalida el token indicado en el header `X-Auth-Token` o en el querystring `token`.
+
++ Request
+
+    + Headers
+    
+            X-Auth-Token: access_token
+
++ Response 200 (application/json)
+
+        {
+            "url": "/logout",
+            "success" : true
+        }
+
+
+# Group Listas
 
 ## Lists Collection [/{account}/lists{?q,offset,limit,sortby,sortdir}]
 
-### Listar todas las listas [GET]
+### Listado y búsqueda [GET]
 
 + Parameters
   + account: testaccount (string, required) - Nombre de la cuenta
@@ -68,7 +162,7 @@ Acá va la intro.
             ]
         }
 
-### Crear una lista [POST]
+### Crear una nueva lista [POST]
 
 + Parameters
 
