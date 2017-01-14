@@ -1,0 +1,217 @@
+FORMAT: 1A
+HOST: https://api.myperfit.com/v2
+
+# Perfit API v2
+
+Acá va la intro.
+
+
+# Group Listas y Contactos
+
+## Lists Collection [/{account}/lists{?q,offset,limit,sortby,sortdir}]
+
+### Listar todas las listas [GET]
+
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta
+  + offset: 0 (number, optional) - Inicio de paginado
+  + limit: 10 (number, optional) - Cantidad de resultados
+  + q (optional) - Búsqueda por `name`
+  + sortby: name (enum[string], optional) - Tipo de ordenamiento
+        + Members
+            + `name`
+            + `created`
+            + `lastMailed`
+  + sortdir: asc (enum[string], optional) - Sentido de ordenamiento
+        + Members
+            + `asc`
+            + `desc`
+  
++ Response 200 (application/json)
+
+        {
+            "url": "/testaccount/lists",
+            "success" : true,
+            "sort": {
+                "sortby": "name",
+                "sortdir": "asc"
+            },
+            "paging": {
+                "offset": 0,
+                "limit": 10,
+                "results": 2,
+                "total": 2
+            },
+            "data": [
+                {
+                    "id": 1,
+                    "name": "Suscriptos a Newsletter",
+                    "description": "Listado de contactos suscriptos al news",
+                    "created": "2014-05-17 05:30:00+0000",
+                    "lastMailed": "2014-05-18 05:30:00+0000",
+                    "activeContacts": 120,
+                    "totalContacts": 100,
+                    "quality": 0.23,
+                    "tags": [ ]
+                }, 
+                {
+                    "id": 2,
+                    "name": "Suscriptos a Ofertas",
+                    "description": "Listado de contactos suscriptos a las ofertas",
+                    "created": "2014-05-17 05:30:00+0000",
+                    "lastMailed": "2014-05-18 05:30:00+0000",
+                    "activeContacts": 221,
+                    "totalContacts": 204,
+                    "quality": 0.34,
+                    "tags": [ ]
+                }
+            ]
+        }
+
+### Crear una lista [POST]
+
++ Parameters
+
+    + account: testaccount (string, required) - Nombre de la cuenta
+
+
+
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
+        + name: Nueva lista (string) - Foo param
+    
+    + Headers
+
+            X-Auth-Token: access_token
+            
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /testaccount/lists/1
+        
+    + Body
+    
+            {
+                "url": "/testaccount/lists",
+                "success" : true,
+                "data": {
+                    "id": 1,
+                    "name": "Nueva lista",
+                    "description": "Listado de contactos suscriptos al news",
+                    "created": "2014-05-17 05:30:00+0000",
+                    "lastMailed": "2014-05-18 05:30:00+0000",
+                    "activeContacts": 120,
+                    "totalContacts": 100,
+                    "quality": 0.23,
+                    "tags": [ ]
+                }
+            }
+
+
+## List item [/{account}/lists/{id}]
+
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+    
+### Obtener una lista [GET]
+
++ Response 200 (application/json)
+
+        {
+            "url": "/testaccount/lists/1",
+            "success" : true,
+            "data": {
+                "id": 1,
+                "name": "Suscriptos a Newsletter",
+                "description": "Listado de contactos suscriptos al news",
+                "created": "2014-05-17 05:30:00+0000",
+                "lastMailed": "2014-05-18 05:30:00+0000",
+                "activeContacts": 120,
+                "totalContacts": 100,
+                "quality": 0.23,
+                "tags": [ ]
+            }
+        }
+
+
+
+### Modificar una lista [PUT]
+
++ Request (application/json)
+
+        {
+            "description": "Nueva descrpción de la lista"
+        }
+
++ Response 200  (application/json)
+
+        {
+            "url": "/testaccount/lists/1",
+            "success" : true,
+            "data": {
+                "description": "Nueva descrpción de la lista"
+            } 
+        }
+
+### Eliminar una lista [DELETE]
+
++ Response 201  (application/json)
+
+        {
+            "url": "/testaccount/lists",
+            "success" : true
+        }
+
+# Group Campañas
+
+## Campaigns List [/{account}/campaigns{?q,offset,limit,sortby,sortdir}]
+
+### Listar todas las campañas [GET]
+
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta
+  + offset: 0 (number, optional) - Inicio de paginado
+  + limit: 10 (number, optional) - Cantidad de resultados
+  + q (optional) - Búsqueda por `name`
+  + sortby: name (enum[string], optional) - Tipo de ordenamiento
+        + Members
+            + `name`
+            + `created`
+            + `lastMailed`
+  + sortdir: asc (enum[string], optional) - Sentido de ordenamiento
+        + Members
+            + `asc`
+            + `desc`
+
++ Response 200 (application/json)
+
+        {
+            "url": "/testaccount/campaigns",
+            "success" : true,
+            "sort": {
+                "sortby": "name",
+                "sortdir": "asc"
+            },
+            "paging": {
+                "offset": 0,
+                "limit": 10,
+                "results": 2,
+                "total": 2
+            },
+            "data": [
+                {
+                    "id": 1,
+                    "name": "Suscriptos a Newsletter",
+                    "description": "Listado de contactos suscriptos al news",
+                    "created": "2014-05-17 05:30:00+0000",
+                    "lastMailed": "2014-05-18 05:30:00+0000",
+                    "activeContacts": 120,
+                    "totalContacts": 100,
+                    "quality": 0.23,
+                    "tags": [ ]
+                }
+            ]
+        }
