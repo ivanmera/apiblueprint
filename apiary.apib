@@ -1,9 +1,7 @@
 FORMAT: 1A
 HOST: https://api.myperfit.com/v2
 
-# Perfit API v2
-
-Acá va la intro.
+# Perfit API
 
 ## Group Autenticación
 
@@ -100,9 +98,10 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
         }
 
 
+
 # Group Listas
 
-## Lists Collection [/{account}/lists{?q,offset,limit,sortby,sortdir}]
+## Colección [/{account}/lists{?q,offset,limit,sortby,sortdir}]
 
 ### Listado y búsqueda [GET]
 
@@ -162,7 +161,7 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
             ]
         }
 
-### Crear una nueva lista [POST]
+### Crear nueva lista [POST]
 
 + Parameters
 
@@ -203,14 +202,13 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
                 }
             }
 
-
-## List item [/{account}/lists/{id}]
+## Elemento [/{account}/lists/{id}]
 
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
-    
-### Obtener una lista [GET]
+
+### Obtener lista [GET]
 
 + Response 200 (application/json)
 
@@ -230,9 +228,7 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
             }
         }
 
-
-
-### Modificar una lista [PUT]
+### Modificar lista [PUT]
 
 + Request (application/json)
 
@@ -250,7 +246,7 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
             } 
         }
 
-### Eliminar una lista [DELETE]
+### Eliminar lista [DELETE]
 
 + Response 201  (application/json)
 
@@ -258,6 +254,78 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
             "url": "/testaccount/lists",
             "success" : true
         }
+
+
+
+# Group Contactos
+
+## Colección [/{account}/contacts{?q,offset,limit,sortby,sortdir}]
+
+### Listado y búsqueda [GET]
+
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta
+  + offset: 0 (number, optional) - Inicio de paginado
+  + limit: 20 (number, optional) - Cantidad de resultados
+  + q (optional) - Búsqueda por `email`
+  + state (optional) - Estado de los contactos
+        + Members
+            + `active`
+            + `unsubscribed`
+            + `compained`
+            + `bounced`
+            + `inactive`
+  + domain (optional) - Dominio de los contactos.
+  + interest (optional) - Se pasa el ID.
+  + list (optional) - Se pasa el ID.
+  + sortby: email (enum[string], optional) - Tipo de ordenamiento
+        + Members
+            + `email`
+            + `quality`
+  + sortdir: asc (enum[string], optional) - Sentido de ordenamiento
+        + Members
+            + `asc`
+            + `desc`
+
++ Response 200 (application/json)
+
+        {
+  "href": "/v2/testaccount/contacts",
+  "success": true,
+  "paging": {
+    "offset": 0,
+    "limit": 20,
+    "results": 2,
+    "total": 2
+  },
+  "sort": {
+    "sortBy": "email",
+    "sortDir": "asc"
+  },
+  "data": [
+    {
+      "id": 7,
+      "email": "prueba@hotmail.com"
+    },
+    {
+      "id": 6,
+      "email": "prueba@prueba.com"
+    }
+  ]
+}
+
+
+### Crear nuevo contacto [POST]
+
+## Elemento [/{account}/contacts/{id}]
+
+### Obtener contacto [GET]
+
+### Modificar contacto [PUT]
+
+### Eliminar contacto [DELETE]
+
+
 
 # Group Campañas
 
@@ -309,3 +377,66 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
                 }
             ]
         }
+
+### Crear una nueva Campaña [POST]
+
++ Parameters
+    + name: (string, required) - Nombre de la campaña
+    + type (optional) - Tipo de campaña (default SIMPLE)
+    + description (optional) - Descripcion de campaña
+    + launchMode (enum[string], optional) - 
+
+            + Default: `NOW`
+
+            + Members
+                + `NOW` - Enviar Campaña Ahora.
+                + `SCHEDULED` - Enviar Campaña Programada.
+    + launch (optional) - Fecha de envio . para especificar un fecha de launch, launchMode debe ser SCHEDULED
+    + tags (optional) - Tags de campaña
+    + options (optional) - Opciones de la campaña.
+    + include (optional) - Include de la campaña.
+    + exclude (optional) - Exlude de la campaña.
+
++ Response 200 (application/json)
+
+        {
+  "href": "/v2/testaccount/campaigns",
+  "success": true,
+  "data": {
+    "id": 595,
+    "name": "tests campaign",
+    "description": "",
+    "tags": [],
+    "type": "SIMPLE",
+    "state": "DRAFT",
+    "launchMode": "NOW",
+    "launchDate": null,
+    "archived": null,
+    "created": "2017-01-30T16:41:27Z",
+    "lastModified": "2017-01-30T16:41:27Z",
+    "recipients": null,
+    "thumbnail": null,
+    "metrics": null,
+    "options": {
+      "SHARE_FACEBOOK": "1",
+      "GA_CAMPAIGN_NAME": "tests campaign",
+      "GOOGLE_ANALYTICS": "1",
+      "SHARE_LINKEDIN": "1",
+      "TRACK_LINKS": "1",
+      "VIEW_ONLINE": "1",
+      "SHARE_TWITTER": "1",
+      "SHARE_FORWARD": "1"
+    },
+    "include": {
+      "lists": [],
+      "interests": [],
+      "campaigns": []
+    },
+    "exclude": {
+      "lists": [],
+      "interests": [],
+      "campaigns": []
+    },
+    "contents": []
+  }
+}
