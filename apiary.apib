@@ -255,8 +255,81 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
             "success" : true
         }
 
+## Acción [/{account}/lists/{id}/{action}]
+
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
+### Clean [GET /{account}/lists/{id}/clean]
+Limpia los contactos de una lista, según el criterio indicado. Pueden indicarse uno o varios criterios en simultáneo. El resultado es la UNION de los criterios, no la intersección.
+
++ Parameters
+  + bounced (boolean, optional) - Limpia contactos marcados como rebotados.
+  + complained (boolean, optional) - Limpia contactos marcados con quejas.
+  + unsubscribed (boolean, optional) - Limpia contactos marcados como desuscriptos. 
+  + inactiveDays (boolean, optional) - Limpia contactos que no demuestran actividad en los últimos N días, o no tienen actividad alguna. 
+  + quality (boolean, optional) -  Limpia los contactos con calidad menor o igual a N, 0<=N<=1. 
+  + action: remove (enum[string], optional) - Indica que hacer con los contactos que coinciden con el criterio.
+        + Members
+            + `delete`
+            + `remove`
 
 
+<!--+ Request (application/json)-->
+
+<!--        {-->
+<!--          "bounced" : true, -->
+<!--          "complained" : true, -->
+<!--          "unsubscribed" : true,-->
+<!--          "activityDays" : 180,-->
+<!--          "quality" : 0.1,-->
+<!--          "action" : "delete"-->
+<!--        }-->
+
+
+
+
+
+### Split [GET /{account}/lists/{id}/split]
+Divide la lista según el criterio indicado. 
++ Parameters
+ + numLists: 2 (number, required) - Indica la cantidad de listas resultantes. Los contactos se dividen en partes iguales, ajustando en alguna lista si la cantidad de contactos no es divisible. min=2, max=100
+
+
+### Duplicate [GET /{account}/lists/{id}/duplicate]
+Duplica una lista, creando una nueva.
++ Parameters
+ + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
+
+### Substract [GET /{account}/lists/{id}/substract]
+Saca de una lista los contactos que aparecen en otras listas.
+
++ Parameters
+ + substractListIds: [43,54,12] (array[numbers], required) - Id de las listas para realizar la resta.
+
+
+### Sample [GET /{account}/lists/{id}/sample]
+Toma una muestra random de N contactos de una lista, creando una lista nueva.
++ Parameters
+ + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
+ + sampleSize: 4000 (number, required) - Indica la cantidad de contactos a obtener del muestreo.
+
+### Join [GET /{account}/lists/{id}/join]
+Une varias listas creando una nueva.
++ Parameters
+ + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
+ + listIds: [43,54,12] (array[numbers], required) - Id de las listas para realizar la union.
+
+
+### Delete [GET /{account}/lists/{id}/delete]
+Elimina la lista y opcionalmente sus contactos, según la opción indicada
+ + deleteContacts: remove (enum[string], optional) - Indica que hacer con los contactos que coinciden con el criterio.
+        + Members
+            + `NONE`
+            + `ALL`
+            + `NOT_IN_OTHER_LISTS`
+ 
 # Group Contactos
 
 ## Colección [/{account}/contacts{?q,offset,limit,sortby,sortdir}]
@@ -290,32 +363,77 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
 + Response 200 (application/json)
 
         {
-  "href": "/v2/testaccount/contacts",
-  "success": true,
-  "paging": {
-    "offset": 0,
-    "limit": 20,
-    "results": 2,
-    "total": 2
-  },
-  "sort": {
-    "sortBy": "email",
-    "sortDir": "asc"
-  },
-  "data": [
-    {
-      "id": 7,
-      "email": "prueba@hotmail.com"
-    },
-    {
-      "id": 6,
-      "email": "prueba@prueba.com"
-    }
-  ]
-}
+          "href": "/v2/testaccount/contacts",
+          "success": true,
+          "paging": {
+            "offset": 0,
+            "limit": 20,
+            "results": 2,
+            "total": 2
+          },
+          "sort": {
+            "sortBy": "email",
+            "sortDir": "asc"
+          },
+          "data": [
+            {
+              "id": 7,
+              "email": "prueba@hotmail.com"
+            },
+            {
+              "id": 6,
+              "email": "prueba@prueba.com"
+            }
+          ]
+        }
 
 
 ### Crear nuevo contacto [POST]
+
++ Parameters
+ + email:  prueba@prueba.com (string, required) - Email del contacto, no se puede modificar.
+ + firstName : prueba (string, optional) - Nombre del contacto.
+ + lastName : prueba (string, optional) - Apellido del contacto.
+ + gender : M (enum[string], optional) - Sexo del contacto
+        + Members
+            + `M`
+            + `F`
+            + ``
+ + language : es (enum[string], optional) - Idioma del contacto.
+        + Members
+            + `de`
+            + `en`
+            + `es`
+            + `fr`
+            + `it`
+            + `pt`
+            + ``
+ + preferredFormat : HTML (enum[string], optional) - Formato preferido del contacto.
+        + Members
+            + `HTML`
+            + `TEXT`
+ + state : ACTIVE (enum[string], optional) - Estado del contacto.
+        + Members
+            + `ACTIVE`
+            + `BOUNCED`
+            + `UNSUBSCRIBED`
+            + `COMPLAINED`
+ + quality (number, optional) - Calificación del Contacto
+ + source : MANUAL (enum[string], optional) - Fuente de ingreso del contacto.
+        + Members
+            + `MANUAL`
+            + `OPTIN_FORM`
+            + `IMPORTED_CSV`
+            + `IMPORTED_YAHOO`
+            + `IMPORTED_GMAIL`
+            + `IMPORTED_HOTMAIL`
+            + `IMPORTED_EXCEL`
+            + `IMPORTED_MELI`
+            + `FORWARD`
+ + customFields (array, optional) - Campos personalizados      
+ + lists (array[list], optional) - 
+ + interests (array[insterest], optional) -
+
 
 ## Elemento [/{account}/contacts/{id}]
 
@@ -325,6 +443,7 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
 
 ### Eliminar contacto [DELETE]
 
+Elimina el contacto indicado.
 
 
 # Group Campañas
