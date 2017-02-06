@@ -754,5 +754,76 @@ Verifica que la campaña cumpla con todos los requisitos para ser enviada. Devue
 
 Marca la campañas indicada como pendiente de envío. Sólo aplica para campañas en estado DRAFT
 ### Stop [GET /{account}/campaign/{id}/stop]
-
 Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía estar en estado PENDING_APPROVAL o SCHEDULED
+
+### Duplicate [GET /{account}/campaign/{id}/duplicate]
+Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía estar en estado PENDING_APPROVAL o SCHEDULED
++ Parameters
+    + name:  (string, required) - Nombre de la nueva Campaña.
+
+### Archive [GET /{account}/campaign/{id}/archive]
+Archiva la campaña indicada. Sólo pueden archivarse las campañas en estado SENT y CANCELLED.
+### Unarchive [GET /{account}/campaign/{id}/unarchive]
+Desarchiva la campaña indicada.
+
+## Contenido [/{account}/contacts/{id}/contents]
+
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
+### Crear Contenido [POST /{account}/campaign/{id}/contents]
+
+Crea un nuevo contenido para la campaña especificada. 
+
++ Parameters
+    + type (enum[string], optional) - 
+            + Default: `HTML`
+            + Members
+                + `HTML` - Enviar Campaña Ahora.
+                + `EDDIE` - Enviar Campaña Programada.
+    + subject: (string, optional) -
+    + from: (string, optional) - 
+    + fromName: (string, optional) - 
+    + replyTo: (string, optional) - 
+    + replyToAddress: (string, optional) - 
+    + unsubscribeText: (string, optional) -
+
+### Obtener Contenido [GET /{account}/campaign/{id}/contents/{idContent}]
+
+Muestra la informacion del contenido indicado.
+
++ Response 200 (application/json)
+
+        { 
+          "id": 23,
+          "type": "HTML",
+          "subject": "",
+          "from": "",
+          "fromName": "",
+          "replyTo": "",
+          "replyToName": "",
+          "unsubscribeTest": "...",
+          "thumbnail: "..."
+        }
+
+### Modificar Contenido [PUT /{account}/campaign/{id}/contents/{idContent}]
+Modifica la info del contenido indicado. Sólo pueden modificarse contenidos de campañas DRAFT
+
++ Parameters
+    + subject: (string, optional) -
+    + from: (string, optional) - 
+    + fromName: (string, optional) - 
+    + replyTo: (string, optional) - 
+    + replyToAddress: (string, optional) - 
+    + unsubscribeText: (string, optional) -
+
+### Eliminar Contenido [DELETE /{account}/campaign/{id}/contents/{idContent}] 
+
+Elimina el contenido especificado. Sólo pueden eliminarse contenidos de campañas DRAFT.
+
+### Obtener Cuerpo del Contenido [GET /{account}/campaign/{id}/contents/{idContent}.(type)]
+Muestra el contenido del tipo indicado. Puede ser html, txt o json (en caso de ser tipo eddie)
+
+### Modificar Cuerpo del Contenido [PUT /{account}/campaign/{id}/contents/{idContent}.(type)]
+Modifica el contenido del tipo indicado. Puede ser html, txt o json (en caso de ser tipo eddie)
