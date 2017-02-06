@@ -530,16 +530,6 @@ Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
          "success": true
         }
 
-### Respawn [GET /{account}/contacts/{id}/respawn]
-Reactiva un contacto si esta desuscripto, rebotado o marcado spam
-
-+ Response 200 (application/json)
-
-        {
-         "href": ".../contacts/1/respawn",
-         "success": true
-        }
-
 # Group Campañas
 
 ## Campaigns List [/{account}/campaigns{?q,offset,limit,sortby,sortdir}]
@@ -613,43 +603,156 @@ Reactiva un contacto si esta desuscripto, rebotado o marcado spam
 + Response 200 (application/json)
 
         {
-  "href": "/v2/testaccount/campaigns",
-  "success": true,
-  "data": {
-    "id": 595,
-    "name": "tests campaign",
-    "description": "",
-    "tags": [],
-    "type": "SIMPLE",
-    "state": "DRAFT",
-    "launchMode": "NOW",
-    "launchDate": null,
-    "archived": null,
-    "created": "2017-01-30T16:41:27Z",
-    "lastModified": "2017-01-30T16:41:27Z",
-    "recipients": null,
-    "thumbnail": null,
-    "metrics": null,
-    "options": {
-      "SHARE_FACEBOOK": "1",
-      "GA_CAMPAIGN_NAME": "tests campaign",
-      "GOOGLE_ANALYTICS": "1",
-      "SHARE_LINKEDIN": "1",
-      "TRACK_LINKS": "1",
-      "VIEW_ONLINE": "1",
-      "SHARE_TWITTER": "1",
-      "SHARE_FORWARD": "1"
-    },
-    "include": {
-      "lists": [],
-      "interests": [],
-      "campaigns": []
-    },
-    "exclude": {
-      "lists": [],
-      "interests": [],
-      "campaigns": []
-    },
-    "contents": []
-  }
-}
+          "href": "/v2/testaccount/campaigns",
+          "success": true,
+          "data": {
+            "id": 595,
+            "name": "tests campaign",
+            "description": "",
+            "tags": [],
+            "type": "SIMPLE",
+            "state": "DRAFT",
+            "launchMode": "NOW",
+            "launchDate": null,
+            "archived": null,
+            "created": "2017-01-30T16:41:27Z",
+            "lastModified": "2017-01-30T16:41:27Z",
+            "recipients": null,
+            "thumbnail": null,
+            "metrics": null,
+            "options": {
+              "SHARE_FACEBOOK": "1",
+              "GA_CAMPAIGN_NAME": "tests campaign",
+              "GOOGLE_ANALYTICS": "1",
+              "SHARE_LINKEDIN": "1",
+              "TRACK_LINKS": "1",
+              "VIEW_ONLINE": "1",
+              "SHARE_TWITTER": "1",
+              "SHARE_FORWARD": "1"
+            },
+            "include": {
+              "lists": [],
+              "interests": [],
+              "campaigns": []
+            },
+            "exclude": {
+              "lists": [],
+              "interests": [],
+              "campaigns": []
+            },
+            "contents": []
+          }
+        }
+
+## Elemento [/{account}/campaign/{id}]
+
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
+### Obtener Campaña [GET]
+Obtiene la campaña indicada.
+
++ Response 200 (application/json)
+
+    {
+      "href": "/v2/testaccount/campaigns/1",
+      "success": true,
+      "data": {
+        "id": 594,
+        "name": "Test",
+        "description": "",
+        "tags": [],
+        "type": "SIMPLE",
+        "state": "DRAFT",
+        "launchMode": "NOW",
+        "launchDate": null,
+        "archived": null,
+        "created": "2017-01-26T21:53:13Z",
+        "lastModified": "2017-01-26T21:53:13Z",
+        "recipients": 0,
+        "thumbnail": "https://thmb.myperfit.com/3835/_cpg/1/thumb-1",
+        "metrics": null,
+        "options": {
+          "SHARE_FACEBOOK": "1",
+          "GA_CAMPAIGN_NAME": "Test",
+          "GOOGLE_ANALYTICS": "0",
+          "SHARE_LINKEDIN": "1",
+          "TRACK_LINKS": "0",
+          "USE_FOOTER": "0",
+          "VIEW_ONLINE": "1",
+          "SHARE_TWITTER": "1",
+          "SHARE_FORWARD": "1",
+          "USE_HEADER": "0"
+        },
+        "include": {
+          "campaigns": [
+            {
+              "id": 2,
+              "action": "SENT"
+            }
+          ]
+        },
+        "exclude": {
+          "campaigns": [
+            {
+              "id": 2,
+              "action": "OPENED"
+            }
+          ]
+        },
+        "contents": [
+          {
+            "id": 507,
+            "type": "HTML",
+            "subject": "Prueba 1234",
+            "from": "user@email.com",
+            "fromName": "user",
+            "replyTo": "user@email.com",
+            "replyToName": "user",
+            "unsubscribeText": "prueba text",
+            "thumbnail": "https://thmb.myperfit.com/3835/_cpg/1/thumb-1"
+          }
+        ]
+      }
+    }
+
+
+### Modificar Campaña [PUT]   
+Modifica la info de la campaña indicada.  En estado draft puede modificarse todo. En cualquier otro estado sólo puede modificarse los tags.
+
++ Parameters
+    + name: (string, optional) - Nombre de la campaña
+    + description (optional) - Descripcion de campaña
+    + launchMode (enum[string], optional) - 
+    
+            + Default: `NOW`
+
+            + Members
+                + `NOW` - Enviar Campaña Ahora.
+                + `SCHEDULED` - Enviar Campaña Programada.
+    + launch (optional) - Fecha de envio . para especificar un fecha de launch, launchMode debe ser SCHEDULED
+    + tags (optional) - Tags de campaña
+    + options (optional) - Opciones de la campaña.
+    + include (optional) - Include de la campaña.
+    + exclude (optional) - Exlude de la campaña.
+    
+### Eliminar Campaña [DELETE]   
+Elimina la campañas indicada.
+Sólo pueden eliminarse campañas en estado DRAFT.
+
+## Acción [/{account}/contacts/{id}/{action}]
+
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
+### Validate [GET /{account}/campaign/{id}/validate]
+Verifica que la campaña cumpla con todos los requisitos para ser enviada. Devuelve los resultados de cada validación. Sólo las campañas en estado DRAFT se pueden validar.
+
+### Launch [GET /{account}/campaign/{id}/launch]
+
+Marca la campañas indicada como pendiente de envío. Sólo aplica para campañas en estado DRAFT
+### Stop [GET /{account}/campaign/{id}/stop]
+
+Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía estar en estado PENDING_APPROVAL o SCHEDULED
