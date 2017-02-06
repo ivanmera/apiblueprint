@@ -276,21 +276,6 @@ Limpia los contactos de una lista, según el criterio indicado. Pueden indicarse
             + `remove`
 
 
-<!--+ Request (application/json)-->
-
-<!--        {-->
-<!--          "bounced" : true, -->
-<!--          "complained" : true, -->
-<!--          "unsubscribed" : true,-->
-<!--          "activityDays" : 180,-->
-<!--          "quality" : 0.1,-->
-<!--          "action" : "delete"-->
-<!--        }-->
-
-
-
-
-
 ### Split [GET /{account}/lists/{id}/split]
 Divide la lista según el criterio indicado. 
 + Parameters
@@ -438,13 +423,96 @@ Elimina la lista y opcionalmente sus contactos, según la opción indicada
 ## Elemento [/{account}/contacts/{id}]
 
 ### Obtener contacto [GET]
+Obtiene el contacto indicado.
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
++ Response 200 (application/json)
+
+        {
+          "href": "/v2/testaccount/contacts/1",
+          "success": true,
+          "data": {
+            "id": 1,
+            "email": "test@test.com",
+            "firstName": "",
+            "lastName": "",
+            "gender": "",
+            "language": "",
+            "preferredFormat": "HTML",
+            "source": "MANUAL",
+            "state": "ACTIVE",
+            "quality": 0,
+            "lastMailed": "2016-07-06T12:28:08Z",
+            "lastAction": "2016-07-13T15:10:02Z",
+            "created": "2016-04-16T12:31:18Z",
+            "lastModified": "2017-01-25T20:47:34Z",
+            "inactivated": null,
+            "lists": [
+              {
+                "id": 1,
+                "name": "Lista 1"
+              },
+              {
+                "id": 277,
+                "name": "Lista 277"
+              }
+            ],
+            "interests": [
+              {
+                "id": 3,
+                "name": "ropa",
+                "subscribed": "2016-05-27T17:44:22Z"
+              }
+            ],
+            "customFields": [
+              {
+                "id": 10,
+                "name": "TELEFONO",
+                "format": "TEXT",
+                "value": ""
+              }
+            ]
+          }
+        }
 
 ### Modificar contacto [PUT]
+Modifica el contacto indicado.
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+    + firstName : prueba (string, optional) - Nombre del contacto.
+    + lastName : prueba (string, optional) - Apellido del contacto.
+    + gender : M (enum[string], optional) - Sexo del contacto
+            + Members
+                + `M`
+                + `F`
+                + ``
+    + language : es (enum[string], optional) - Idioma del contacto.
+            + Members
+                + `de`
+                + `en`
+                + `es`
+                + `fr`
+                + `it`
+                + `pt`
+                + ``
+    + preferredFormat : HTML (enum[string], optional) - Formato preferido del contacto.
+            + Members
+                + `HTML`
+                + `TEXT`
+    
+    + customFields (array, optional) - Campos personalizados      
+    + lists (array[list], optional) - 
+    + interests (array[insterest], optional) -
+    
 
 ### Eliminar contacto [DELETE]
-
 Elimina el contacto indicado.
-
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
 
 # Group Campañas
 
