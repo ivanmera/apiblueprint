@@ -513,6 +513,32 @@ Elimina el contacto indicado.
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
+    
+## Acción [/{account}/contacts/{id}/{action}]
+
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
+### Unsubscribe [GET /{account}/contacts/{id}/unsubscribe]
+Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
+
++ Response 200 (application/json)
+
+        {
+         "href": ".../contacts/1/unsubscribe",
+         "success": true
+        }
+
+### Respawn [GET /{account}/contacts/{id}/respawn]
+Reactiva un contacto si esta desuscripto, rebotado o marcado spam
+
++ Response 200 (application/json)
+
+        {
+         "href": ".../contacts/1/respawn",
+         "success": true
+        }
 
 # Group Campañas
 
