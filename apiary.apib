@@ -900,3 +900,74 @@ Modifica el interés indicado.
 
 ### Eliminar un Interes [DELETE /{account}/interests/{id}]
 Elimina el interes.
+
+
+
+# Group Campos Personalizados
+
+## Fields List [/{account}/fields]
+
+### Listar todas los Campos Personalizados [GET]
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta
+  + offset: 0 (number, optional) - Inicio de paginado
+  + limit: 20 (number, optional) - Cantidad de resultados
+  + q (optional) -  Búsqueda exacta, puede utilizarse el wildcard *
+  + sortby: id (enum[string], optional) - Tipo de ordenamiento
+        + Members
+            + `name`
+            + `id`
+  + sortdir: asc (enum[string], optional) - Sentido de ordenamiento
+        + Members
+            + `asc`
+            + `desc`
+  + filter : filter[custom]=true (array[string], optional) - Filtrar por tipo.
+        
+
+### Crear un nuevo Campo Personalizado  [POST]
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta.
+  + name:  (string, required) - Nombre del campo personalizado.
+  + tag:  (string, optional) - Descripcion.
+  + format (enum[string], optional) - 
+            + Default: `TEXT`
+            + Members
+                + `TEXT` 
+                + `INT` 
+                + `DATE` 
+
+## Elemento
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
+### Obtener un Campo Personalizado [POST /{account}/fields/{id}]
+
+
++ Response 200 (application/json)
+    
+    {
+    "href": ".../fields/1"
+    "success": true,
+    "data:{
+            "id: 11,
+            "name:"Domicilio",
+            "tag: "ADDR",
+            "format: "TEXT",
+            "custom: true
+        }
+    }
+
+
+
+
+### Modificar un Campo Personalizado [PUT /{account}/fields/{id}]
+
+Modifica el interés indicado. 
+
++ Parameters
++ name:  (string, required) - Nombre del campo personalizado.
++ tag:  (string, optional) - Descripcion.
+
+### Eliminar un Interes [DELETE /{account}/fields/{id}]
+Elimina un campo personalizado.
