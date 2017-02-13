@@ -1102,3 +1102,145 @@ El formato del POST debe ser en multipart/form-data y el nombre del part debe se
             "id: "temp.csv"
         }
     }
+    
+    
+    
+# Group Formularios
+
+## Fields Optins [/{account}/optins]
+
+### Listar todas los Campos Personalizados [GET]
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta
+  + offset: 0 (number, optional) - Inicio de paginado
+  + limit: 20 (number, optional) - Cantidad de resultados
+  + q (optional) -  Búsqueda exacta, puede utilizarse el wildcard *
+  + sortby: name (enum[string], optional) - Tipo de ordenamiento
+        + Members
+            + `name`
+            + `created`
+            + `totalSubscriptions`
+            + `lastmonthsubscriptions`
+            + `lastweeksubscriptions`
+  + sortdir: asc (enum[string], optional) - Sentido de ordenamiento
+        + Members
+            + `asc`
+            + `desc`
+  + filter : filter[list]=1 (array[string], optional) - Filtra los optins asociados a la lista indicada
+        
+
+
+### Crear un nuevo Campo Personalizado  [POST]
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta.
+  + name:  (string, required) 
+  + lists:  (array[int], required) 
+  + form:  (Form, required)
+  + confirmation:  (Confirmation, required) -
+  + description (string, optional) - Descripcion.
+
++ Request (application/json)
+
+
+    {
+        "name": "test integracion2",
+        "description": "asdasdas",
+        "lists": ["229", "307"],
+        "form": {
+            "title": "SUSCRIPCIÓN",
+            "text": "Completa tus datos para suscribirte",
+            "interestsText": "",
+            "buttonText": "ENVIAR",
+            "footer": "",
+            "successMessage": "¡Muchas gracias! Recibirás un email para validar tu casilla.",
+            "redirect": "",
+            "fields": [{
+                "id": 3,
+                "displayName": "Email",
+                "required": true
+            }, {
+                "id": 1,
+                "displayName": "Nombre",
+                "required": false
+            }, {
+                "id": 2,
+                "displayName": "Apellido",
+                "required": false
+            }],
+            "interests": []
+        },
+        "confirmation": {
+            "fromAddress": "test@test.com.ar",
+            "fromName": "test",
+            "subject": "Confirma tu suscripción",
+            "title": "Confirmación",
+            "header": "Para validar tu casilla y confirmar la suscripción, haz click aquí:",
+            "linkText": "CONFIRMAR",
+            "footer": "Si nunca te suscribiste por favor ignora ese mensaje.",
+            "redirect": "https://optin.myperfit.com/confirmed"
+        }
+    }
+
+## Elemento
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
+### Obtener un Formulario [GET /{account}/optins/{id}]
+Obtiene el formulario solicitado.
+
++ Response 200 (application/json)
+{
+        "name": "test integracion2",
+        "description": "asdasdas",
+        "lists": ["229", "307"],
+        "form": {
+            "title": "SUSCRIPCIÓN",
+            "text": "Completa tus datos para suscribirte",
+            "interestsText": "",
+            "buttonText": "ENVIAR",
+            "footer": "",
+            "successMessage": "¡Muchas gracias! Recibirás un email para validar tu casilla.",
+            "redirect": "",
+            "fields": [{
+                "id": 3,
+                "displayName": "Email",
+                "required": true
+            }, {
+                "id": 1,
+                "displayName": "Nombre",
+                "required": false
+            }, {
+                "id": 2,
+                "displayName": "Apellido",
+                "required": false
+            }],
+            "interests": []
+        },
+        "confirmation": {
+            "fromAddress": "test@test.com.ar",
+            "fromName": "test",
+            "subject": "Confirma tu suscripción",
+            "title": "Confirmación",
+            "header": "Para validar tu casilla y confirmar la suscripción, haz click aquí:",
+            "linkText": "CONFIRMAR",
+            "footer": "Si nunca te suscribiste por favor ignora ese mensaje.",
+            "redirect": "https://optin.myperfit.com/confirmed"
+        }
+    }
+
+### Modificar un Formulario [PUT /{account}/optins/{id}]
+
+Modifica el interés indicado. 
+
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta.
+  + name:  (string, optional) 
+  + lists:  (array[int], optional) 
+  + form:  (Form, optional)
+  + confirmation:  (Confirmation, optional) -
+  + description (string, optional)  - Descripcion.
+
+
+### Eliminar un Formulario [DELETE /{account}/optins/{id}]
+Elimina un formulario.
