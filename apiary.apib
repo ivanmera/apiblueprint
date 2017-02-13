@@ -1037,3 +1037,68 @@ La tarea sólo puede ser cancelada por el usuario owner o por un usuario con el 
         "href" : "/testaccount/tasks/1",
         "success" : true,
     }
+    
+    
+# Group Importacion
+
+## Fields import [/{account}/contacts/import]
+
+### Importar Contactos desde CSV[POST]
+Importa contactos masivamente. Es una acción asincrónica.
+
++ Request (application/json)
+
+        {
+            "type": "CSV",
+            "sourceRaw": "email@example.com,john,doe\nemail2@xample.com,Tom,Smith",
+            "list": 1,
+            "interests": [3, 5],
+            "mode": "IGNORE",
+            "columnFields": [3, 1, 2], 
+            "columnHeaders": false,
+            "columnSeparator": ",",
+            "stringDelimiter": "'",
+        }
+
+### Importar Contactos desde Archivo[POST]
+Importa contactos masivamente. Es una acción asincrónica. Se requiere hacer el upload del archivo antes. 
+
++ Request (application/json)      
+
+        {
+            "type": "CSV",
+            "sourceFile": "temp.csv",
+            "sourceFileEncoding": "ISO-8859-1",
+            "list": 1,
+            "interests": [3, 5],
+            "mode": "OVERWRITE",
+            "normalizeCase": true,
+            "interestColumn": 4,
+            "interestDefaultExpirationDays": 0,
+            "columnFields": [3,2,1], 
+            "columnHeaders": true,
+            "columnSeparator": ",",
+            "stringDelimiter": "\"",
+            "dateFormat": "dd/mm/yyyy"
+        }
+
+
+### Previsualizacion de la Importacion [POST /{account}/contacts/import/preview]
+Hace un preview de una importación.
+Recibe los mismos parámetros del import, pero como resultado devuelve el listado de los primeros contactos que se generarían utilizando las opciones indicadas o inferidas.
+        
+
+### Subir un archivo  [POST /{account}/contacts/import/upload]
+Sube un archivo para ser importado. Se devuelve el nombre que se debe usar para referirse a este archivo al momento de la importación o preview.
+El formato del POST debe ser en multipart/form-data y el nombre del part debe ser fileToUpload
+
+
++ Response 200 (application/json)
+
+    {
+        "href": "/testaccount/contacts/import/upload",
+        "success": true,
+        "data": {
+            "id: "temp.csv"
+        }
+    }
