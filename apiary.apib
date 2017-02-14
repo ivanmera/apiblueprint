@@ -1109,7 +1109,7 @@ El formato del POST debe ser en multipart/form-data y el nombre del part debe se
 
 ## Fields Optins [/{account}/optins]
 
-### Listar todas los Campos Personalizados [GET]
+### Listar todas los Formularios [GET]
 + Parameters
   + account: testaccount (string, required) - Nombre de la cuenta
   + offset: 0 (number, optional) - Inicio de paginado
@@ -1130,7 +1130,7 @@ El formato del POST debe ser en multipart/form-data y el nombre del part debe se
         
 
 
-### Crear un nuevo Campo Personalizado  [POST]
+### Crear un nuevo Formulario  [POST]
 + Parameters
   + account: testaccount (string, required) - Nombre de la cuenta.
   + name:  (string, required) 
@@ -1243,4 +1243,94 @@ Modifica el interés indicado.
 
 
 ### Eliminar un Formulario [DELETE /{account}/optins/{id}]
+Elimina un formulario.
+
+
+# Group Plantillas
+
+## Fields Templates [/{account}/templates]
+
+### Listar todas las Plantillas [GET]
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta
+  + offset: 0 (number, optional) - Inicio de paginado
+  + limit: 100 (number, optional) - Cantidad de resultados
+  + q (optional) -  Busca por *name*
+  + sortby: type (enum[string], optional) - Tipo de ordenamiento
+        + Members
+            + `name`
+            + `type`
+            + `created`
+  + sortdir: asc (enum[string], optional) - Sentido de ordenamiento
+        + Members
+            + `asc`
+            + `desc`
+  + filter : filter[type]=all (array[string], optional) - Filtra segun el tipo. (html, eddie, templates, folders)
+        
+
+
+### Crear una nueva Plantilla  [POST]
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta.
+  + name:  (string, required) - Nombre de la Plantilla
+  + type : HTML (enum[string], required) - Tipo de Plantilla
+    + Members
+        + `HTML`
+        + `EDDIE`
+        + `FOLDER`
+  + htmlFile (string, optional) -  (sólo para type=HTML)
+  + htmlUrl (string, optional) -   (sólo para type=HTML)
+  + htmlRaw (string, optional) -   (sólo para type=HTML)
+  
+
++ Request (application/json)
+
+    {
+        "type": "EDDIE",
+        "name": "Mi Plantilla Eddie"
+    }
+
+## Elemento
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
+### Obtener una Plantilla [GET /{account}/templates/{id}]
+Devuelve el template o carpeta indicado
+
++ Response 200 (application/json)
+
+{
+    "href": ".../templates/1301931536/1301931456"
+    "success": true,
+    "data": {
+        "id": "/1301931536/1301931456",
+        "type": "HTML",
+        "name": "Mi Plantilla HTML",
+        "location": "/1301931536/",
+        "created": "2015-12-02T10:23:12+0000",
+        "thumbnail": "http://myperfit.com/../thumb.png"
+    }
+}
+
+### Obtener el contenido una Plantilla [PUT /{account}/templates/{id}.(type)]
+
+Devuelve el contenido de tipo (type) del template indicado
+Los (type) posibles son html, json y txt
+
+
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta.
+
+### Modificar una Plantilla [PUT /{account}/templates/{id}]
+
+Modifica el interés indicado. 
+
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta.
+  + name (string, optional) - Nuevo nombre en caso de querer renombrar.
+  + location (string, optional) - Nueva ubicación en caso de querer mover.
+
+
+### Eliminar una Plantilla [DELETE /{account}/templates/{id}]
 Elimina un formulario.
