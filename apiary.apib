@@ -838,6 +838,59 @@ Muestra el contenido del tipo indicado. Puede ser html, txt o json (en caso de s
 Modifica el contenido del tipo indicado. Puede ser html, txt o json (en caso de ser tipo eddie)
 
 
+# Group Reportes Campañas
+
+## Contenido [/{account}/campaigns/{id}]
+
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
+
+### Obtener las Metricas [GET /{account}/campaigns/{id}/metrics]
+Muestra las métricas de la campaña indicada.
+
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
++ Response 200 (application/json)
+
+{
+    "href": ".../campaigns/1/metrics",
+    "success": true,
+    "data": {
+    "sent": 1000,
+    "sentP": 100,
+    "delivered": 998,
+    "deliveredP": 99.8,
+    "opened": 200,
+    "openedP": 20,
+    "openedT": 1234,
+    "viewsOnline": 12,
+    "clicked": 50,
+    "clickedP": 5,
+    "clickedT": 67,
+    "ctor": 14, 
+    "converted": 1,
+    "convertedP": 0.1
+    "bounced":
+    "bouncedP":
+    "bouncedHard":
+    "bouncedHardP":
+    "bouncedSoft":
+    "bouncedSoftP":
+    "complained":2
+    "complainedP":0.02
+    "unsubscribed":3
+    "unsubscribedP":0.03
+    "shared": 23
+    "sharedOpened": 110
+    "sharedClicked": 23
+}
+}
+
+
 # Group Intereses
 
 ## Intereses List [/{account}/interests]
@@ -1317,6 +1370,14 @@ Devuelve el template o carpeta indicado
 
 Devuelve el contenido de tipo (type) del template indicado
 Los (type) posibles son html, json y txt
+
+
++ Parameters
+  + account: testaccount (string, required) - Nombre de la cuenta.
+
+### Previsualizar una Plantilla [PUT /{account}/templates/{id}/preview]
+Devuelve el preview del contenido html.
+El preview incluye el envelope para que sea un html bien formado y con estilos responsive (tags html, head, style, etc)
 
 
 + Parameters
