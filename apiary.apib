@@ -284,42 +284,86 @@ Limpia los contactos de una lista, según el criterio indicado. Pueden indicarse
 
 ### Split [GET /{account}/lists/{id}/split]
 Divide la lista según el criterio indicado. 
-+ Parameters
- + numLists: 2 (number, required) - Indica la cantidad de listas resultantes. Los contactos se dividen en partes iguales, ajustando en alguna lista si la cantidad de contactos no es divisible. min=2, max=100
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
+        + numLists: 2 (number, required) - Indica la cantidad de listas resultantes. Los contactos se dividen en partes iguales, ajustando en alguna lista si la cantidad de contactos no es divisible. min=2, max=100
+    
+    + Headers
+
+            X-Auth-Token: access_token
+ 
 
 
 ### Duplicate [GET /{account}/lists/{id}/duplicate]
 Duplica una lista, creando una nueva.
-+ Parameters
- + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
+        + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
+    
+    + Headers
+
+            X-Auth-Token: access_token
+ 
 
 ### Substract [GET /{account}/lists/{id}/substract]
 Saca de una lista los contactos que aparecen en otras listas.
++ Request (application/x-www-form-urlencoded)
 
-+ Parameters
- + substractListIds: [43,54,12] (array[numbers], required) - Id de las listas para realizar la resta.
+    + Attributes
+        + substractListIds: [43,54,12] (array[], required) - Id de las listas para realizar la resta.
+    
+    + Headers
+
+            X-Auth-Token: access_token
+ 
 
 
 ### Sample [GET /{account}/lists/{id}/sample]
 Toma una muestra random de N contactos de una lista, creando una lista nueva.
-+ Parameters
- + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
- + sampleSize: 4000 (number, required) - Indica la cantidad de contactos a obtener del muestreo.
++ Request (application/x-www-form-urlencoded)
 
+    + Attributes
+       + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
+       + sampleSize: 4000 (number, required) - Indica la cantidad de contactos a obtener del muestreo.
+
+    
+    + Headers
+
+            X-Auth-Token: access_token
+
+ 
 ### Join [GET /{account}/lists/{id}/join]
 Une varias listas creando una nueva.
-+ Parameters
- + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
- + listIds: [43,54,12] (array[numbers], required) - Id de las listas para realizar la union.
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
+        + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
+        + listIds: [43,54,12] (array[], required) - Id de las listas para realizar la union.
 
 
+    
+    + Headers
+
+            X-Auth-Token: access_token
+ 
 ### Delete [GET /{account}/lists/{id}/delete]
 Elimina la lista y opcionalmente sus contactos, según la opción indicada
- + deleteContacts: remove (enum[string], optional) - Indica que hacer con los contactos que coinciden con el criterio.
-        + Members
-            + `NONE`
-            + `ALL`
-            + `NOT_IN_OTHER_LISTS`
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
+        + deleteContacts: remove (enum[string], optional) - Indica que hacer con los contactos que coinciden con el criterio.
+            + Members
+                + `NONE`
+                + `ALL`
+                + `NOT_IN_OTHER_LISTS`
+    
+    + Headers
+
+            X-Auth-Token: access_token
+ 
  
 # Group Contactos
 
