@@ -850,9 +850,6 @@ Modifica el contenido del tipo indicado. Puede ser html, txt o json (en caso de 
 ### Obtener las Metricas [GET /{account}/campaigns/{id}/metrics]
 Muestra las métricas de la campaña indicada.
 
-+ Parameters
-    + account: testaccount (string, required)
-    + id: 1 (number, required)
 
 + Response 200 (application/json)
 
@@ -889,6 +886,44 @@ Muestra las métricas de la campaña indicada.
     "sharedClicked": 23
 }
 }
+
+
+### Obtener contactos segun Accion. [GET /{account}/campaigns/{id}/actions]
+Muestra las acciones realizadas en la campaña indicada.
+
++ Parameters
+  + offset: 0 (number, optional) - Inicio de paginado
+  + limit: 20 (number, optional) - Cantidad de resultados
+  + q (optional) - Búsqueda por `name`
+  + sortby: date (enum[string], optional) - Tipo de ordenamiento
+        + Members
+            + `date`
+  + sortdir: desc (enum[string], optional) - Sentido de ordenamiento
+        + Members
+            + `asc`
+            + `desc`
+   + type (enum[string], required) - 
+            + Members
+                + `ALL` - Si se está haciendo un reporte JSON solo es válido all si se aplicó la opción de búsqueda por email.
+                + `SENT` -      
+                + `OPEN` -      
+                + `CLICK` -      
+                + `HARD_BOUNCE` -      
+                + `SOFT_BOUNCE` - 
+                + `UNSUBSCRIBE` - 
+                + `COMPLAINT` - 
+                + `SHARE` - 
+                + `CONVERSION` - 
+                + `NO_OPEN` - 
+                + `NO_CLICK` - 
+                + `NO_CONVERSION` - 
+
+
+### Obtener contactos segun Accion. [GET /{account}/campaigns/{id}/timeline]
+Muestra las métricas (opens, clicks) por hora de la campaña indicada.
+
+
+
 
 
 # Group Intereses
