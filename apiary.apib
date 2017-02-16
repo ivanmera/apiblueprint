@@ -425,50 +425,54 @@ Elimina la lista y opcionalmente sus contactos, según la opción indicada
 
 ### Crear nuevo contacto [POST]
 
-+ Parameters
- + email:  prueba@prueba.com (string, required) - Email del contacto, no se puede modificar.
- + firstName : prueba (string, optional) - Nombre del contacto.
- + lastName : prueba (string, optional) - Apellido del contacto.
- + gender : M (enum[string], optional) - Sexo del contacto
-        + Members
-            + `M`
-            + `F`
-            + ``
- + language : es (enum[string], optional) - Idioma del contacto.
-        + Members
-            + `de`
-            + `en`
-            + `es`
-            + `fr`
-            + `it`
-            + `pt`
-            + ``
- + preferredFormat : HTML (enum[string], optional) - Formato preferido del contacto.
-        + Members
-            + `HTML`
-            + `TEXT`
- + state : ACTIVE (enum[string], optional) - Estado del contacto.
-        + Members
-            + `ACTIVE`
-            + `BOUNCED`
-            + `UNSUBSCRIBED`
-            + `COMPLAINED`
- + quality (number, optional) - Calificación del Contacto
- + source : MANUAL (enum[string], optional) - Fuente de ingreso del contacto.
-        + Members
-            + `MANUAL`
-            + `OPTIN_FORM`
-            + `IMPORTED_CSV`
-            + `IMPORTED_YAHOO`
-            + `IMPORTED_GMAIL`
-            + `IMPORTED_HOTMAIL`
-            + `IMPORTED_EXCEL`
-            + `IMPORTED_MELI`
-            + `FORWARD`
- + customFields (array, optional) - Campos personalizados      
- + lists (array[list], optional) - 
- + interests (array[insterest], optional) -
++ Request (application/x-www-form-urlencoded)
 
+    + Attributes
+     + email:  prueba@prueba.com (string, required) - Email del contacto, no se puede modificar.
+     + firstName : prueba (string, optional) - Nombre del contacto.
+     + lastName : prueba (string, optional) - Apellido del contacto.
+     + gender : M (enum[string], optional) - Sexo del contacto
+            + Members
+                + `M`
+                + `F`
+                + ``
+     + language : es (enum[string], optional) - Idioma del contacto.
+            + Members
+                + `de`
+                + `en`
+                + `es`
+                + `fr`
+                + `it`
+                + `pt`
+                + ``
+     + preferredFormat : HTML (enum[string], optional) - Formato preferido del contacto.
+            + Members
+                + `HTML`
+                + `TEXT`
+     + state : ACTIVE (enum[string], optional) - Estado del contacto.
+            + Members
+                + `ACTIVE`
+                + `BOUNCED`
+                + `UNSUBSCRIBED`
+                + `COMPLAINED`
+     + quality (number, optional) - Calificación del Contacto
+     + source : MANUAL (enum[string], optional) - Fuente de ingreso del contacto.
+            + Members
+                + `MANUAL`
+                + `OPTIN_FORM`
+                + `IMPORTED_CSV`
+                + `IMPORTED_YAHOO`
+                + `IMPORTED_GMAIL`
+                + `IMPORTED_HOTMAIL`
+                + `IMPORTED_EXCEL`
+                + `IMPORTED_MELI`
+                + `FORWARD`
+     + customFields (array[], optional) - Campos personalizados      
+     + lists (array[], optional) - 
+     + interests (array[], optional) -
+    + Headers
+
+            X-Auth-Token: access_token
 
 ## Elemento [/{account}/contacts/{id}]
 
@@ -532,31 +536,37 @@ Modifica el contacto indicado.
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
-    + firstName : prueba (string, optional) - Nombre del contacto.
-    + lastName : prueba (string, optional) - Apellido del contacto.
-    + gender : M (enum[string], optional) - Sexo del contacto
-            + Members
-                + `M`
-                + `F`
-                + ``
-    + language : es (enum[string], optional) - Idioma del contacto.
-            + Members
-                + `de`
-                + `en`
-                + `es`
-                + `fr`
-                + `it`
-                + `pt`
-                + ``
-    + preferredFormat : HTML (enum[string], optional) - Formato preferido del contacto.
-            + Members
-                + `HTML`
-                + `TEXT`
     
-    + customFields (array, optional) - Campos personalizados      
-    + lists (array[list], optional) - 
-    + interests (array[insterest], optional) -
-    
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
+        + firstName : prueba (string, optional) - Nombre del contacto.
+        + lastName : prueba (string, optional) - Apellido del contacto.
+        + gender : M (enum[string], optional) - Sexo del contacto
+                + Members
+                    + `M`
+                    + `F`
+                    + ``
+        + language : es (enum[string], optional) - Idioma del contacto.
+                + Members
+                    + `de`
+                    + `en`
+                    + `es`
+                    + `fr`
+                    + `it`
+                    + `pt`
+                    + ``
+        + preferredFormat : HTML (enum[string], optional) - Formato preferido del contacto.
+                + Members
+                    + `HTML`
+                    + `TEXT`
+        
+        + customFields (array[], optional) - Campos personalizados      
+        + lists (array[], optional) - 
+        + interests (array[], optional) -
+    + Headers
+
+        X-Auth-Token: access_token  
 
 ### Eliminar contacto [DELETE]
 Elimina el contacto indicado.
@@ -633,14 +643,14 @@ Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
 
 ### Crear una nueva Campaña [POST]
 
-+ Parameters
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
     + name: (string, required) - Nombre de la campaña
     + type (optional) - Tipo de campaña (default SIMPLE)
     + description (optional) - Descripcion de campaña
     + launchMode (enum[string], optional) - 
-
             + Default: `NOW`
-
             + Members
                 + `NOW` - Enviar Campaña Ahora.
                 + `SCHEDULED` - Enviar Campaña Programada.
@@ -771,13 +781,13 @@ Obtiene la campaña indicada.
 ### Modificar Campaña [PUT]   
 Modifica la info de la campaña indicada.  En estado draft puede modificarse todo. En cualquier otro estado sólo puede modificarse los tags.
 
-+ Parameters
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
     + name: (string, optional) - Nombre de la campaña
     + description (optional) - Descripcion de campaña
     + launchMode (enum[string], optional) - 
-    
             + Default: `NOW`
-
             + Members
                 + `NOW` - Enviar Campaña Ahora.
                 + `SCHEDULED` - Enviar Campaña Programada.
@@ -808,7 +818,9 @@ Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía es
 
 ### Duplicate [GET /{account}/campaign/{id}/duplicate]
 Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía estar en estado PENDING_APPROVAL o SCHEDULED
-+ Parameters
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
     + name:  (string, required) - Nombre de la nueva Campaña.
 
 ### Archive [GET /{account}/campaign/{id}/archive]
@@ -835,7 +847,9 @@ Envía un mail de prueba del contenido especificado. Se indican los emails a usa
 
 Crea un nuevo contenido para la campaña especificada. 
 
-+ Parameters
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
     + type (enum[string], optional) - 
             + Default: `HTML`
             + Members
@@ -869,7 +883,9 @@ Muestra la informacion del contenido indicado.
 ### Modificar Contenido [PUT /{account}/campaign/{id}/contents/{idContent}]
 Modifica la info del contenido indicado. Sólo pueden modificarse contenidos de campañas DRAFT
 
-+ Parameters
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
     + subject: (string, optional) -
     + from: (string, optional) - 
     + fromName: (string, optional) - 
@@ -998,10 +1014,13 @@ Muestra las métricas (opens, clicks) por hora de la campaña indicada.
 
 ### Crear un nuevo Interes [POST]
 + Parameters
-  + account: testaccount (string, required) - Nombre de la cuenta.
-  + name:  (string, required) - Nombre del interes.
-  + description:  (string, optional) - Descripcion.
-  + expirationDays:  (string, optional) - Dias de expiracion.
+  + account: testaccount (string, required) - Nombre de la cuenta
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
+      + name:  (string, required) - Nombre del interes.
+      + description:  (string, optional) - Descripcion.
+      + expirationDays:  (string, optional) - Dias de expiracion.
 
 
 ## Elemento
@@ -1031,10 +1050,12 @@ Muestra las métricas (opens, clicks) por hora de la campaña indicada.
 
 Modifica el interés indicado. 
 
-+ Parameters
-  + name:  (string, required) - Nombre del interes.
-  + description:  (string, optional) - Descripcion.
-  + expirationDays:  (string, optional) - Dias de expiracion.
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
+      + name:  (string, required) - Nombre del interes.
+      + description:  (string, optional) - Descripcion.
+      + expirationDays:  (string, optional) - Dias de expiracion.
 
 ### Eliminar un Interes [DELETE /{account}/interests/{id}]
 Elimina el interes.
@@ -1065,14 +1086,17 @@ Elimina el interes.
 ### Crear un nuevo Campo Personalizado  [POST]
 + Parameters
   + account: testaccount (string, required) - Nombre de la cuenta.
-  + name:  (string, required) - Nombre del campo personalizado.
-  + tag:  (string, optional) - Descripcion.
-  + format (enum[string], optional) - 
-            + Default: `TEXT`
-            + Members
-                + `TEXT` 
-                + `INT` 
-                + `DATE` 
+  + Request (application/x-www-form-urlencoded)
+
+    + Attributes
+        + name:  (string, required) - Nombre del campo personalizado.
+        + tag:  (string, optional) - Descripcion.
+        + format (enum[string], optional) - 
+                + Default: `TEXT`
+                + Members
+                    + `TEXT` 
+                    + `INT` 
+                    + `DATE` 
 
 ## Elemento
 + Parameters
@@ -1103,9 +1127,11 @@ Elimina el interes.
 
 Modifica el interés indicado. 
 
-+ Parameters
-+ name:  (string, required) - Nombre del campo personalizado.
-+ tag:  (string, optional) - Descripcion.
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
+        + name:  (string, required) - Nombre del campo personalizado.
+        + tag:  (string, optional) - Descripcion.
 
 ### Eliminar un Interes [DELETE /{account}/fields/{id}]
 Elimina un campo personalizado.
@@ -1410,15 +1436,18 @@ Elimina un formulario.
 ### Crear una nueva Plantilla  [POST]
 + Parameters
   + account: testaccount (string, required) - Nombre de la cuenta.
-  + name:  (string, required) - Nombre de la Plantilla
-  + type : HTML (enum[string], required) - Tipo de Plantilla
-    + Members
-        + `HTML`
-        + `EDDIE`
-        + `FOLDER`
-  + htmlFile (string, optional) -  (sólo para type=HTML)
-  + htmlUrl (string, optional) -   (sólo para type=HTML)
-  + htmlRaw (string, optional) -   (sólo para type=HTML)
+  + Request (application/x-www-form-urlencoded)
+
+    + Attributes
+      + name:  (string, required) - Nombre de la Plantilla
+      + type : HTML (enum[string], required) - Tipo de Plantilla
+        + Members
+            + `HTML`
+            + `EDDIE`
+            + `FOLDER`
+      + htmlFile (string, optional) -  (sólo para type=HTML)
+      + htmlUrl (string, optional) -   (sólo para type=HTML)
+      + htmlRaw (string, optional) -   (sólo para type=HTML)
   
 
 + Request (application/json)
@@ -1474,8 +1503,11 @@ Modifica la plantilla indicada.
 
 + Parameters
   + account: testaccount (string, required) - Nombre de la cuenta.
-  + name (string, optional) - Nuevo nombre en caso de querer renombrar.
-  + location (string, optional) - Nueva ubicación en caso de querer mover.
+  + Request (application/x-www-form-urlencoded)
+
+    + Attributes
+      + name (string, optional) - Nuevo nombre en caso de querer renombrar.
+      + location (string, optional) - Nueva ubicación en caso de querer mover.
 
 
 ### Eliminar una Plantilla [DELETE /{account}/templates/{id}]
@@ -1522,14 +1554,17 @@ Para crear una carpeta sólo hay que indicar contenido application/json o applic
 
 + Parameters
   + account: testaccount (string, required) - Nombre de la cuenta.
-  + name:  (string, optional) - Nombre de la Plantilla
-  + type : IMAGE (enum[string], required) - Tipo de Plantilla
-    + Members
-        + `IMAGE`
-        + `FOLDER`
-  + maxWidth (integer, optional) - Ancho máximo al cual se hará un resize, manteniendo aspecto
-  + maxWidth (integer, optional) - Alto máximo al cual se hará un resize, manteniendo aspecto
-  + overwrite : false (boolean, optional) - Indica si se pisa la imagen en caso de existir, no aplica para carpetas
+  + Request (application/x-www-form-urlencoded)
+
+    + Attributes
+      + name:  (string, optional) - Nombre de la Plantilla
+      + type : IMAGE (enum[string], required) - Tipo de Plantilla
+        + Members
+            + `IMAGE`
+            + `FOLDER`
+      + maxWidth (integer, optional) - Ancho máximo al cual se hará un resize, manteniendo aspecto
+      + maxWidth (integer, optional) - Alto máximo al cual se hará un resize, manteniendo aspecto
+      + overwrite : false (boolean, optional) - Indica si se pisa la imagen en caso de existir, no aplica para carpetas
   
 
 + Request (application/json)
@@ -1568,10 +1603,10 @@ Devuelve la información de una imagen o carpeta. Para el caso de las carpetas, 
 
 Modifica la información de una imagen o carpeta. Renombra o mueve una imagen o 
 
-+ Parameters
-  + account: testaccount (string, required) - Nombre de la cuenta.
-  + name (string, optional) - Nuevo nombre en caso de querer renombrar.
-  + location (string, optional) - Nueva ubicación en caso de querer mover.
++ Request (application/x-www-form-urlencoded)
+    + Attributes
+      + name (string, optional) - Nuevo nombre en caso de querer renombrar.
+      + location (string, optional) - Nueva ubicación en caso de querer mover.
 
 
 ### Eliminar una Imagen/Carpeta [DELETE /{account}/templates/{id}]
