@@ -646,19 +646,23 @@ Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-    + name: (string, required) - Nombre de la campaña
-    + type (optional) - Tipo de campaña (default SIMPLE)
-    + description (optional) - Descripcion de campaña
-    + launchMode (enum[string], optional) - 
-            + Default: `NOW`
-            + Members
-                + `NOW` - Enviar Campaña Ahora.
-                + `SCHEDULED` - Enviar Campaña Programada.
-    + launch (optional) - Fecha de envio . para especificar un fecha de launch, launchMode debe ser SCHEDULED
-    + tags (optional) - Tags de campaña
-    + options (optional) - Opciones de la campaña.
-    + include (optional) - Include de la campaña.
-    + exclude (optional) - Exlude de la campaña.
+        + name: (string, required) - Nombre de la campaña
+        + type (optional) - Tipo de campaña (default SIMPLE)
+        + description (optional) - Descripcion de campaña
+        + launchMode (enum[string], optional) - 
+                + Default: `NOW`
+                + Members
+                    + `NOW` - Enviar Campaña Ahora.
+                    + `SCHEDULED` - Enviar Campaña Programada.
+        + launch (optional) - Fecha de envio . para especificar un fecha de launch, launchMode debe ser SCHEDULED
+        + tags (optional) - Tags de campaña
+        + options (optional) - Opciones de la campaña.
+        + include (optional) - Include de la campaña.
+        + exclude (optional) - Exlude de la campaña.
+    
+    + Headers
+
+            X-Auth-Token: access_token
 
 + Response 200 (application/json)
 
@@ -784,19 +788,21 @@ Modifica la info de la campaña indicada.  En estado draft puede modificarse tod
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-    + name: (string, optional) - Nombre de la campaña
-    + description (optional) - Descripcion de campaña
-    + launchMode (enum[string], optional) - 
-            + Default: `NOW`
-            + Members
-                + `NOW` - Enviar Campaña Ahora.
-                + `SCHEDULED` - Enviar Campaña Programada.
-    + launch (optional) - Fecha de envio . para especificar un fecha de launch, launchMode debe ser SCHEDULED
-    + tags (optional) - Tags de campaña
-    + options (optional) - Opciones de la campaña.
-    + include (optional) - Include de la campaña.
-    + exclude (optional) - Exlude de la campaña.
-    
+        + name: (string, optional) - Nombre de la campaña
+        + description (optional) - Descripcion de campaña
+        + launchMode (enum[string], optional) - 
+                + Default: `NOW`
+                + Members
+                    + `NOW` - Enviar Campaña Ahora.
+                    + `SCHEDULED` - Enviar Campaña Programada.
+        + launch (optional) - Fecha de envio . para especificar un fecha de launch, launchMode debe ser SCHEDULED
+        + tags (optional) - Tags de campaña
+        + options (optional) - Opciones de la campaña.
+        + include (optional) - Include de la campaña.
+        + exclude (optional) - Exlude de la campaña.
+     + Headers
+
+            X-Auth-Token: access_token
 ### Eliminar Campaña [DELETE]   
 Elimina la campañas indicada.
 Sólo pueden eliminarse campañas en estado DRAFT.
@@ -821,7 +827,10 @@ Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía es
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-    + name:  (string, required) - Nombre de la nueva Campaña.
+        + name:  (string, required) - Nombre de la nueva Campaña.
+    + Headers
+
+            X-Auth-Token: access_token
 
 ### Archive [GET /{account}/campaign/{id}/archive]
 Archiva la campaña indicada. Sólo pueden archivarse las campañas en estado SENT y CANCELLED.
@@ -850,17 +859,20 @@ Crea un nuevo contenido para la campaña especificada.
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-    + type (enum[string], optional) - 
-            + Default: `HTML`
-            + Members
-                + `HTML` - Enviar Campaña Ahora.
-                + `EDDIE` - Enviar Campaña Programada.
-    + subject: (string, optional) -
-    + from: (string, optional) - 
-    + fromName: (string, optional) - 
-    + replyTo: (string, optional) - 
-    + replyToAddress: (string, optional) - 
-    + unsubscribeText: (string, optional) -
+        + type (enum[string], optional) - 
+                + Default: `HTML`
+                + Members
+                    + `HTML` - Enviar Campaña Ahora.
+                    + `EDDIE` - Enviar Campaña Programada.
+        + subject: (string, optional) -
+        + from: (string, optional) - 
+        + fromName: (string, optional) - 
+        + replyTo: (string, optional) - 
+        + replyToAddress: (string, optional) - 
+        + unsubscribeText: (string, optional) -
+    + Headers
+
+            X-Auth-Token: access_token
 
 ### Obtener Contenido [GET /{account}/campaign/{id}/contents/{idContent}]
 
@@ -886,12 +898,15 @@ Modifica la info del contenido indicado. Sólo pueden modificarse contenidos de 
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-    + subject: (string, optional) -
-    + from: (string, optional) - 
-    + fromName: (string, optional) - 
-    + replyTo: (string, optional) - 
-    + replyToAddress: (string, optional) - 
-    + unsubscribeText: (string, optional) -
+        + subject: (string, optional) -
+        + from: (string, optional) - 
+        + fromName: (string, optional) - 
+        + replyTo: (string, optional) - 
+        + replyToAddress: (string, optional) - 
+        + unsubscribeText: (string, optional) -
+    + Headers
+
+            X-Auth-Token: access_token
 
 ### Eliminar Contenido [DELETE /{account}/campaign/{id}/contents/{idContent}] 
 
@@ -1021,7 +1036,9 @@ Muestra las métricas (opens, clicks) por hora de la campaña indicada.
       + name:  (string, required) - Nombre del interes.
       + description:  (string, optional) - Descripcion.
       + expirationDays:  (string, optional) - Dias de expiracion.
+    + Headers
 
+            X-Auth-Token: access_token
 
 ## Elemento
 + Parameters
@@ -1053,9 +1070,12 @@ Modifica el interés indicado.
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-      + name:  (string, required) - Nombre del interes.
-      + description:  (string, optional) - Descripcion.
-      + expirationDays:  (string, optional) - Dias de expiracion.
+        + name:  (string, required) - Nombre del interes.
+        + description:  (string, optional) - Descripcion.
+        + expirationDays:  (string, optional) - Dias de expiracion.
+    + Headers
+
+        X-Auth-Token: access_token
 
 ### Eliminar un Interes [DELETE /{account}/interests/{id}]
 Elimina el interes.
@@ -1097,7 +1117,9 @@ Elimina el interes.
                     + `TEXT` 
                     + `INT` 
                     + `DATE` 
+    + Headers
 
+            X-Auth-Token: access_token
 ## Elemento
 + Parameters
     + account: testaccount (string, required)
@@ -1132,7 +1154,9 @@ Modifica el interés indicado.
     + Attributes
         + name:  (string, required) - Nombre del campo personalizado.
         + tag:  (string, optional) - Descripcion.
+    + Headers
 
+            X-Auth-Token: access_token
 ### Eliminar un Interes [DELETE /{account}/fields/{id}]
 Elimina un campo personalizado.
 
@@ -1439,16 +1463,18 @@ Elimina un formulario.
   + Request (application/x-www-form-urlencoded)
 
     + Attributes
-      + name:  (string, required) - Nombre de la Plantilla
-      + type : HTML (enum[string], required) - Tipo de Plantilla
-        + Members
-            + `HTML`
-            + `EDDIE`
-            + `FOLDER`
-      + htmlFile (string, optional) -  (sólo para type=HTML)
-      + htmlUrl (string, optional) -   (sólo para type=HTML)
-      + htmlRaw (string, optional) -   (sólo para type=HTML)
-  
+        + name:  (string, required) - Nombre de la Plantilla
+        + type : HTML (enum[string], required) - Tipo de Plantilla
+            + Members
+                + `HTML`
+                + `EDDIE`
+                + `FOLDER`
+        + htmlFile (string, optional) -  (sólo para type=HTML)
+        + htmlUrl (string, optional) -   (sólo para type=HTML)
+        + htmlRaw (string, optional) -   (sólo para type=HTML)
+    + Headers
+
+            X-Auth-Token: access_token
 
 + Request (application/json)
 
@@ -1506,9 +1532,11 @@ Modifica la plantilla indicada.
   + Request (application/x-www-form-urlencoded)
 
     + Attributes
-      + name (string, optional) - Nuevo nombre en caso de querer renombrar.
-      + location (string, optional) - Nueva ubicación en caso de querer mover.
+        + name (string, optional) - Nuevo nombre en caso de querer renombrar.
+        + location (string, optional) - Nueva ubicación en caso de querer mover.
+    + Headers
 
+            X-Auth-Token: access_token
 
 ### Eliminar una Plantilla [DELETE /{account}/templates/{id}]
 Elimina una plantilla.
@@ -1557,15 +1585,17 @@ Para crear una carpeta sólo hay que indicar contenido application/json o applic
   + Request (application/x-www-form-urlencoded)
 
     + Attributes
-      + name:  (string, optional) - Nombre de la Plantilla
-      + type : IMAGE (enum[string], required) - Tipo de Plantilla
-        + Members
-            + `IMAGE`
-            + `FOLDER`
-      + maxWidth (integer, optional) - Ancho máximo al cual se hará un resize, manteniendo aspecto
-      + maxWidth (integer, optional) - Alto máximo al cual se hará un resize, manteniendo aspecto
-      + overwrite : false (boolean, optional) - Indica si se pisa la imagen en caso de existir, no aplica para carpetas
-  
+        + name:  (string, optional) - Nombre de la Plantilla
+        + type : IMAGE (enum[string], required) - Tipo de Plantilla
+            + Members
+                + `IMAGE`
+                + `FOLDER`
+        + maxWidth (integer, optional) - Ancho máximo al cual se hará un resize, manteniendo aspecto
+        + maxWidth (integer, optional) - Alto máximo al cual se hará un resize, manteniendo aspecto
+        + overwrite : false (boolean, optional) - Indica si se pisa la imagen en caso de existir, no aplica para carpetas
+    + Headers
+
+            X-Auth-Token: access_token
 
 + Request (application/json)
 
@@ -1604,10 +1634,13 @@ Devuelve la información de una imagen o carpeta. Para el caso de las carpetas, 
 Modifica la información de una imagen o carpeta. Renombra o mueve una imagen o 
 
 + Request (application/x-www-form-urlencoded)
-    + Attributes
-      + name (string, optional) - Nuevo nombre en caso de querer renombrar.
-      + location (string, optional) - Nueva ubicación en caso de querer mover.
 
+    + Attributes
+        + name (string, optional) - Nuevo nombre en caso de querer renombrar.
+        + location (string, optional) - Nueva ubicación en caso de querer mover.
+    + Headers
+
+            X-Auth-Token: access_token
 
 ### Eliminar una Imagen/Carpeta [DELETE /{account}/templates/{id}]
 Elimina una imagen o carpeta. 
