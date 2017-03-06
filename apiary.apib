@@ -363,7 +363,44 @@ Elimina la lista y opcionalmente sus contactos, según la opción indicada
     + Headers
 
             X-Auth-Token: access_token
+            
+### Export [POST /{account}/lists/{id}/export]
+Exporta los contactos que pertenecen a la lista, según la opción indicada. Devuelve una tarea.
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
  
++ Response 201  (application/json)
+
+        {
+          "href": "/testaccount/lists/1/export",
+          "success": true,
+          "task": {
+            "id": 104615088,
+            "type": "CONTACT_EXPORT_TASK",
+            "name": "Export Contacts test",
+            "state": "QUEUED",
+            "cancellable": true,
+            "message": "Pending execution",
+            "owner": "testaccount",
+            "created": "2017-03-06T13:27:43Z",
+            "init": null,
+            "end": null,
+            "completed": 0,
+            "eta": -1,
+            "request": "/testaccount/lists/1/export",
+            "parameters": {
+              "listId": 1,
+              "state": null,
+              "interestId": null,
+              "fileName": "test-2017-03-06-10-27-43.csv"
+            },
+            "result": null,
+            "fileName": "test-2017-03-06-10-27-43.csv"
+          }
+        }
  
 # Group Contactos
 
@@ -580,6 +617,47 @@ Elimina el contacto indicado.
     + account: testaccount (string, required)
     + id: 1 (number, required)
 
+### Export [POST /{account}/lists/{id}/export]
+Exporta los contactos segun los filtros enviados en el request. Devuelve una tarea.
++ Request (application/json)
+
+        {
+            "listId": 1,
+            "state": "ACTIVE",
+            "interestId": 1,
+        }
+ 
++ Response 201  (application/json)
+
+        {
+          "href": "/testaccount/lists/1/export",
+          "success": true,
+          "task": {
+            "id": 104615088,
+            "type": "CONTACT_EXPORT_TASK",
+            "name": "Export Contacts test",
+            "state": "QUEUED",
+            "cancellable": true,
+            "message": "Pending execution",
+            "owner": "testaccount",
+            "created": "2017-03-06T13:27:43Z",
+            "init": null,
+            "end": null,
+            "completed": 0,
+            "eta": -1,
+            "request": "/testaccount/lists/1/export",
+            "parameters": {
+                "listId": 1,
+                "state": "ACTIVE",
+                "interestId": 1,
+                "fileName": "test-2017-03-06-10-27-43.csv"
+            },
+            "result": null,
+            "fileName": "test-2017-03-06-10-27-43.csv"
+          }
+        }
+
+
 ### Unsubscribe [GET /{account}/contacts/{id}/unsubscribe]
 Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
 
@@ -589,6 +667,8 @@ Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
          "href": ".../contacts/1/unsubscribe",
          "success": true
         }
+        
+
 
 # Group Campañas
 
@@ -1079,6 +1159,44 @@ Modifica el interés indicado.
 
 ### Eliminar un Interes [DELETE /{account}/interests/{id}]
 Elimina el interes.
+
+### Export [POST /{account}/lists/{id}/export]
+Exporta los contactos que tienen ese interes, según la opción indicada. Devuelve una tarea.
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
+ 
++ Response 201  (application/json)
+
+        {
+          "href": "/testaccount/lists/1/export",
+          "success": true,
+          "task": {
+            "id": 104615088,
+            "type": "CONTACT_EXPORT_TASK",
+            "name": "Export Contacts test",
+            "state": "QUEUED",
+            "cancellable": true,
+            "message": "Pending execution",
+            "owner": "testaccount",
+            "created": "2017-03-06T13:27:43Z",
+            "init": null,
+            "end": null,
+            "completed": 0,
+            "eta": -1,
+            "request": "/testaccount/lists/1/export",
+            "parameters": {
+              "listId": null,
+              "state": null,
+              "interestId": 1,
+              "fileName": "test-2017-03-06-10-27-43.csv"
+            },
+            "result": null,
+            "fileName": "test-2017-03-06-10-27-43.csv"
+          }
+        }
 
 
 
