@@ -348,6 +348,21 @@ Une varias listas creando una nueva.
     + Headers
 
             X-Auth-Token: access_token
+            
+### Join [GET /{account}/lists/{id}/join]
+Genera una nueva lista con la intersección entre las listas seleccionadas.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Attributes
+        + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
+        + listIds: [43,54,12] (array[], required) - Id de las listas para realizar la intersección.
+
+
+    
+    + Headers
+
+            X-Auth-Token: access_token
  
 ### Delete [GET /{account}/lists/{id}/delete]
 Elimina la lista y opcionalmente sus contactos, según la opción indicada
