@@ -282,7 +282,7 @@ Limpia los contactos de una lista, según el criterio indicado. Pueden indicarse
   
 
 
-### Split [GET /{account}/lists/{id}/split]
+### Split [POST /{account}/lists/{id}/split]
 Divide la lista según el criterio indicado. 
 + Request (application/x-www-form-urlencoded)
 
@@ -295,7 +295,7 @@ Divide la lista según el criterio indicado.
  
 
 
-### Duplicate [GET /{account}/lists/{id}/duplicate]
+### Duplicate [POST /{account}/lists/{id}/duplicate]
 Duplica una lista, creando una nueva.
 
 + Request (application/x-www-form-urlencoded)
@@ -308,7 +308,7 @@ Duplica una lista, creando una nueva.
             X-Auth-Token: access_token
  
 
-### Substract [GET /{account}/lists/{id}/substract]
+### Substract [POST /{account}/lists/{id}/substract]
 Saca de una lista los contactos que aparecen en otras listas.
 + Request (application/x-www-form-urlencoded)
 
@@ -321,7 +321,7 @@ Saca de una lista los contactos que aparecen en otras listas.
  
 
 
-### Sample [GET /{account}/lists/{id}/sample]
+### Sample [POST /{account}/lists/{id}/sample]
 Toma una muestra random de N contactos de una lista, creando una lista nueva.
 + Request (application/x-www-form-urlencoded)
 
@@ -335,7 +335,7 @@ Toma una muestra random de N contactos de una lista, creando una lista nueva.
             X-Auth-Token: access_token
 
  
-### Join [GET /{account}/lists/{id}/join]
+### Join [POST /{account}/lists/{id}/join]
 Une varias listas creando una nueva.
 + Request (application/x-www-form-urlencoded)
 
@@ -349,7 +349,7 @@ Une varias listas creando una nueva.
 
             X-Auth-Token: access_token
             
-### Join [GET /{account}/lists/{id}/join]
+### Intersect [POST /{account}/lists/{id}/intersect]
 Genera una nueva lista con la intersección entre las listas seleccionadas.
 
 + Request (application/x-www-form-urlencoded)
@@ -364,7 +364,7 @@ Genera una nueva lista con la intersección entre las listas seleccionadas.
 
             X-Auth-Token: access_token
  
-### Delete [GET /{account}/lists/{id}/delete]
+### Delete [POST /{account}/lists/{id}/delete]
 Elimina la lista y opcionalmente sus contactos, según la opción indicada
 + Request (application/x-www-form-urlencoded)
 
@@ -673,7 +673,7 @@ Exporta los contactos segun los filtros enviados en el request. Devuelve una tar
         }
 
 
-### Unsubscribe [GET /{account}/contacts/{id}/unsubscribe]
+### Unsubscribe [POST /{account}/contacts/{id}/unsubscribe]
 Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
 
 + Response 200 (application/json)
@@ -803,7 +803,7 @@ Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
           }
         }
 
-## Elemento [/{account}/campaign/{id}]
+## Elemento [/{account}/campaigns/{id}]
 
 + Parameters
     + account: testaccount (string, required)
@@ -908,16 +908,16 @@ Sólo pueden eliminarse campañas en estado DRAFT.
     + account: testaccount (string, required)
     + id: 1 (number, required)
 
-### Validate [GET /{account}/campaign/{id}/validate]
+### Validate [GET /{account}/campaigns/{id}/validate]
 Verifica que la campaña cumpla con todos los requisitos para ser enviada. Devuelve los resultados de cada validación. Sólo las campañas en estado DRAFT se pueden validar.
 
-### Launch [GET /{account}/campaign/{id}/launch]
+### Launch [POST /{account}/campaigns/{id}/launch]
 
 Marca la campañas indicada como pendiente de envío. Sólo aplica para campañas en estado DRAFT
-### Stop [GET /{account}/campaign/{id}/stop]
+### Stop [POST /{account}/campaigns/{id}/stop]
 Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía estar en estado PENDING_APPROVAL o SCHEDULED
 
-### Duplicate [GET /{account}/campaign/{id}/duplicate]
+### Duplicate [POST /{account}/campaigns/{id}/duplicate]
 Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía estar en estado PENDING_APPROVAL o SCHEDULED
 + Request (application/x-www-form-urlencoded)
 
@@ -927,12 +927,12 @@ Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía es
 
             X-Auth-Token: access_token
 
-### Archive [GET /{account}/campaign/{id}/archive]
+### Archive [POST /{account}/campaigns/{id}/archive]
 Archiva la campaña indicada. Sólo pueden archivarse las campañas en estado SENT y CANCELLED.
-### Unarchive [GET /{account}/campaign/{id}/unarchive]
+### Unarchive [POST /{account}/campaigns/{id}/unarchive]
 Desarchiva la campaña indicada.
 
-### Enviar Test [GET /{account}/campaign/{id}/contents/{idContent}/sendtest]
+### Enviar Test [POST /{account}/campaigns/{id}/contents/{idContent}/sendtest]
 Envía un mail de prueba del contenido especificado. Se indican los emails a usar para probar. Se puede indicar hasta 10 emails.
 
 + Request (application/json)
@@ -947,7 +947,7 @@ Envía un mail de prueba del contenido especificado. Se indican los emails a usa
     + account: testaccount (string, required)
     + id: 1 (number, required)
 
-### Crear Contenido [POST /{account}/campaign/{id}/contents]
+### Crear Contenido [POST /{account}/campaigns/{id}/contents]
 
 Crea un nuevo contenido para la campaña especificada. 
 
@@ -969,7 +969,7 @@ Crea un nuevo contenido para la campaña especificada.
 
             X-Auth-Token: access_token
 
-### Obtener Contenido [GET /{account}/campaign/{id}/contents/{idContent}]
+### Obtener Contenido [GET /{account}/campaigns/{id}/contents/{idContent}]
 
 Muestra la informacion del contenido indicado.
 
@@ -987,7 +987,7 @@ Muestra la informacion del contenido indicado.
           "thumbnail: "..."
         }
 
-### Modificar Contenido [PUT /{account}/campaign/{id}/contents/{idContent}]
+### Modificar Contenido [PUT /{account}/campaigns/{id}/contents/{idContent}]
 Modifica la info del contenido indicado. Sólo pueden modificarse contenidos de campañas DRAFT
 
 + Request (application/x-www-form-urlencoded)
@@ -1003,14 +1003,14 @@ Modifica la info del contenido indicado. Sólo pueden modificarse contenidos de 
 
             X-Auth-Token: access_token
 
-### Eliminar Contenido [DELETE /{account}/campaign/{id}/contents/{idContent}] 
+### Eliminar Contenido [DELETE /{account}/campaigns/{id}/contents/{idContent}] 
 
 Elimina el contenido especificado. Sólo pueden eliminarse contenidos de campañas DRAFT.
 
-### Obtener Cuerpo del Contenido [GET /{account}/campaign/{id}/contents/{idContent}.(type)]
+### Obtener Cuerpo del Contenido [GET /{account}/campaigns/{id}/contents/{idContent}.(type)]
 Muestra el contenido del tipo indicado. Puede ser html, txt o json (en caso de ser tipo eddie)
 
-### Modificar Cuerpo del Contenido [PUT /{account}/campaign/{id}/contents/{idContent}.(type)]
+### Modificar Cuerpo del Contenido [PUT /{account}/campaigns/{id}/contents/{idContent}.(type)]
 Modifica el contenido del tipo indicado. Puede ser html, txt o json (en caso de ser tipo eddie)
 
 
