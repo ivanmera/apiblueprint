@@ -625,6 +625,12 @@ Elimina el contacto indicado.
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
     
 ## Acción [/{account}/contacts/{id}/{action}]
 
@@ -902,6 +908,11 @@ Modifica la info de la campaña indicada.  En estado draft puede modificarse tod
 Elimina la campañas indicada.
 Sólo pueden eliminarse campañas en estado DRAFT.
 
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
 ## Acción [/{account}/contacts/{id}/{action}]
 
 + Parameters
@@ -911,14 +922,32 @@ Sólo pueden eliminarse campañas en estado DRAFT.
 ### Validate [GET /{account}/campaigns/{id}/validate]
 Verifica que la campaña cumpla con todos los requisitos para ser enviada. Devuelve los resultados de cada validación. Sólo las campañas en estado DRAFT se pueden validar.
 
-### Launch [POST /{account}/campaigns/{id}/launch]
++ Request (application/x-www-form-urlencoded)
 
+    + Headers
+
+            X-Auth-Token: access_token
+            
+### Launch [POST /{account}/campaigns/{id}/launch]
 Marca la campañas indicada como pendiente de envío. Sólo aplica para campañas en estado DRAFT
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
+            
 ### Stop [POST /{account}/campaigns/{id}/stop]
 Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía estar en estado PENDING_APPROVAL o SCHEDULED
 
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
+
 ### Duplicate [POST /{account}/campaigns/{id}/duplicate]
-Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía estar en estado PENDING_APPROVAL o SCHEDULED
+Duplica la campaña indicada.
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
@@ -926,11 +955,29 @@ Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía es
     + Headers
 
             X-Auth-Token: access_token
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
 
 ### Archive [POST /{account}/campaigns/{id}/archive]
 Archiva la campaña indicada. Sólo pueden archivarse las campañas en estado SENT y CANCELLED.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
+
 ### Unarchive [POST /{account}/campaigns/{id}/unarchive]
 Desarchiva la campaña indicada.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
 
 ### Enviar Test [POST /{account}/campaigns/{id}/contents/{idContent}/sendtest]
 Envía un mail de prueba del contenido especificado. Se indican los emails a usar para probar. Se puede indicar hasta 10 emails.
@@ -940,6 +987,12 @@ Envía un mail de prueba del contenido especificado. Se indican los emails a usa
         {
             "emails" : [ “test1@example.com”, “test2@example.com” ]
         }
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
 
 ## Contenido [/{account}/contacts/{id}/contents]
 
@@ -1003,15 +1056,40 @@ Modifica la info del contenido indicado. Sólo pueden modificarse contenidos de 
 
             X-Auth-Token: access_token
 
-### Eliminar Contenido [DELETE /{account}/campaigns/{id}/contents/{idContent}] 
 
+### Eliminar Contenido [DELETE /{account}/campaings/{id}/contents/{idContent}]
 Elimina el contenido especificado. Sólo pueden eliminarse contenidos de campañas DRAFT.
 
-### Obtener Cuerpo del Contenido [GET /{account}/campaigns/{id}/contents/{idContent}.(type)]
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
+
+## Cuerpo Contenido [/{account}/contacts/{id}/contents/{idContent}.{type}]
+
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+
+### Obtener Cuerpo del Contenido [GET /{account}/campaigns/{id}/contents/{idContent}.{type}]
 Muestra el contenido del tipo indicado. Puede ser html, txt o json (en caso de ser tipo eddie)
 
-### Modificar Cuerpo del Contenido [PUT /{account}/campaigns/{id}/contents/{idContent}.(type)]
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
+
+### Modificar Cuerpo del Contenido [PUT /{account}/campaigns/{id}/contents/{idContent}.{type}]
 Modifica el contenido del tipo indicado. Puede ser html, txt o json (en caso de ser tipo eddie)
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
+
 
 
 # Group Reportes Campañas
@@ -1175,6 +1253,12 @@ Modifica el interés indicado.
 ### Eliminar un Interes [DELETE /{account}/interests/{id}]
 Elimina el interes.
 
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
+
 ### Export [POST /{account}/lists/{id}/export]
 Exporta los contactos que tienen ese interes, según la opción indicada. Devuelve una tarea.
 + Request (application/x-www-form-urlencoded)
@@ -1293,6 +1377,11 @@ Modifica el interés indicado.
 ### Eliminar un Campo Personalizado [DELETE /{account}/fields/{id}]
 Elimina un campo personalizado.
 
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
 
 # Group Tareas
 
@@ -1319,7 +1408,7 @@ Elimina un campo personalizado.
     + account: testaccount (string, required)
     + id: 1 (number, required)
 
-### Obtener una Tarea [POST /{account}/tasks/{id}]
+### Obtener una Tarea [GET /{account}/tasks/{id}]
 
 
 + Response 200 (application/json)
@@ -1352,6 +1441,12 @@ Elimina un campo personalizado.
 
 La tarea sólo puede ser cancelada por el usuario owner o por un usuario con el permiso tasks:cancel, y sólo cuando está en estado queued, initializing o processing con cancellable en true.
 
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
+            
 + Response 200 (application/json)
 
     {
@@ -1562,11 +1657,21 @@ Modifica el interés indicado.
   + confirmation:  (Confirmation, optional) -
   + description (string, optional)  - Descripcion.
 
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
 
 ### Eliminar un Formulario [DELETE /{account}/optins/{id}]
 Elimina un formulario.
 
++ Request (application/x-www-form-urlencoded)
 
+    + Headers
+
+            X-Auth-Token: access_token
+            
 # Group Plantillas
 
 ## Fields Templates [/{account}/templates]
@@ -1667,6 +1772,9 @@ Modifica la plantilla indicada.
     + Attributes
         + name (string, optional) - Nuevo nombre en caso de querer renombrar.
         + location (string, optional) - Nueva ubicación en caso de querer mover.
+            
++ Request (application/x-www-form-urlencoded)
+
     + Headers
 
             X-Auth-Token: access_token
@@ -1674,6 +1782,11 @@ Modifica la plantilla indicada.
 ### Eliminar una Plantilla [DELETE /{account}/templates/{id}]
 Elimina una plantilla.
 
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
 
 # Group Imagenes
 
@@ -1778,3 +1891,9 @@ Modifica la información de una imagen o carpeta. Renombra o mueve una imagen o
 ### Eliminar una Imagen/Carpeta [DELETE /{account}/templates/{id}]
 Elimina una imagen o carpeta. 
 En el caso de las carpetas, se elimina la carpeta con todo su contenido
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            X-Auth-Token: access_token
