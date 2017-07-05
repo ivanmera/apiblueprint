@@ -3,15 +3,23 @@ HOST: https://api.myperfit.com/v2
 
 # Perfit API
 
+¡Bienvenido! Aquí encontrarás el listado completo de llamadas a la API de Perfit, con todos sus posibles parámetros, respuestas y errores.
+Puedes ver ejemplos de cada recurso e incluso realizar llamados a la API para realizar pruebas.
+
 ## Group Autenticación
 
+Existen 2 formas de identificar a un usuario en la API:
+
+- Utilizando un API key. Este es el método preferido por ser más sencillo. Se debe indicar en el header `Authorization: Bearer API_KEY`.
+- Mediante un token de autenticación. El token es temporal y se obtiene haciendo un llamado a `/login` indicando nombre de usuario y contraseña.
+
+
 ### Login [POST /login]
-Existen 3 formas de autenticación:
+Existen 2 formas de realizar el login:
 1. Indicando `user` + `password`. Siendo `user` usuario@cuenta o la dirección de email del usuario.
 2. Indicando `user` + `password` + [`account`] . Siendo `user` el email del usuario. Opcionalmente indicar la cuenta en caso de email duplicado. Ver documentación, sección autenticación.
-3. Indicando únicamente `apikey`.
 
-Para los casos 1 y 2 puede indicarse también `newPassword` en el caso que sea necesaria un actualización de la contraseña.
+Puede indicarse también `newPassword` en el caso que sea necesaria un actualización de la contraseña, por ejemplo cuando ha expirado.
 
 + Request (application/json)
 
@@ -19,7 +27,6 @@ Para los casos 1 y 2 puede indicarse también `newPassword` en el caso que sea n
       + user: diego@perfit.com.ar (string, optional) - email o username@account
       + password: 123 (string, optional)
       + account (string, optional)
-      + apikey (string, optional)
       + newPassword (string, optional)
 
 + Response 201 (application/json)
@@ -120,6 +127,14 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
             + `asc`
             + `desc`
   
++ Request
+
+    + Headers
+    
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
+  
+  
 + Response 200 (application/json)
 
         {
@@ -174,7 +189,8 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
         + name: Nueva lista (string) - Foo param
     
     + Headers
-
+    
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
             
 + Response 201 (application/json)
@@ -209,6 +225,13 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
 
 ### Obtener lista [GET]
 
++ Request
+
+    + Headers
+    
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
+            
 + Response 200 (application/json)
 
         {
@@ -231,9 +254,16 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
 
 + Request (application/json)
 
-        {
-            "description": "Nueva descrpción de la lista"
-        }
+    + Headers
+    
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
+    
+    + Body
+    
+            {
+                "description": "Nueva descrpción de la lista"
+            }
 
 + Response 200  (application/json)
 
@@ -247,6 +277,13 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
 
 ### Eliminar lista [DELETE]
 
++ Request
+
+    + Headers
+    
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
+            
 + Response 201  (application/json)
 
         {
@@ -254,7 +291,7 @@ Invalida el token indicado en el header `X-Auth-Token` o en el querystring `toke
             "success" : true
         }
 
-## Acción [/{account}/lists/{id}/{action}]
+## Acciones [/{account}/lists/{id}/{action}]
 
 + Parameters
     + account: testaccount (string, required)
@@ -278,12 +315,39 @@ Limpia los contactos de una lista, según el criterio indicado. Pueden indicarse
     
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
   
++ Response 200  (application/json)
 
+        {
+            "url": "/myaccount/lists/1/clean",
+            "success" : true,
+            "task": {
+                "id": 556342,
+                "type": "LIST_CLEAN",
+                "name": "Limpieza de lista 1",
+                "state": "QUEUED",
+                "cancellable": false,
+                "message": "Pendiente de ejecución",
+                "owner": "myuser",
+                "created": "2014-05-20T10:23:04-0300",
+                "init": null,
+                "end": null,
+                "completed": 0,
+                "eta": null,
+                "request": "/myaccount/lists/123/split",
+                "parameters": {
+                    "action": "DELETE",
+                    "bounced": true
+                },
+                "result": null
+            }
+        }
 
 ### Split [POST /{account}/lists/{id}/split]
 Divide la lista según el criterio indicado. 
+
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
@@ -291,9 +355,34 @@ Divide la lista según el criterio indicado.
     
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
  
++ Response 200  (application/json)
 
+        {
+            "url": "/myaccount/lists/1/split",
+            "success" : true,
+            "task": {
+                "id": 556342,
+                "type": "LIST_SPLIT",
+                "name": "Limpieza de lista 1",
+                "state": "QUEUED",
+                "cancellable": false,
+                "message": "Pendiente de ejecución",
+                "owner": "myuser",
+                "created": "2014-05-20T10:23:04-0300",
+                "init": null,
+                "end": null,
+                "completed": 0,
+                "eta": null,
+                "request": "/myaccount/lists/123/split",
+                "parameters": {
+                    "numLists": 2
+                },
+                "result": null
+            }
+        }
 
 ### Duplicate [POST /{account}/lists/{id}/duplicate]
 Duplica una lista, creando una nueva.
@@ -305,24 +394,80 @@ Duplica una lista, creando una nueva.
     
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
  
++ Response 200  (application/json)
+
+        {
+            "url": "/myaccount/lists/1/duplicate",
+            "success" : true,
+            "task": {
+                "id": 556342,
+                "type": "LIST_DUPLICATE",
+                "name": "Duplicado de lista 1",
+                "state": "QUEUED",
+                "cancellable": false,
+                "message": "Pendiente de ejecución",
+                "owner": "myuser",
+                "created": "2014-05-20T10:23:04-0300",
+                "init": null,
+                "end": null,
+                "completed": 0,
+                "eta": null,
+                "request": "/myaccount/lists/123/duplicate",
+                "parameters": {
+                    "newListName": "Copia de 1"
+                },
+                "result": null
+            }
+        }
+
 
 ### Substract [POST /{account}/lists/{id}/substract]
 Saca de una lista los contactos que aparecen en otras listas.
+
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-        + substractListIds: [43,54,12] (array[], required) - Id de las listas para realizar la resta.
+        + substractListIds: [2,3] (array[], required) - Id de las listas para realizar la resta.
     
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
+ 
++ Response 200  (application/json)
+
+        {
+            "url": "/myaccount/lists/1/substract",
+            "success" : true,
+            "task": {
+                "id": 556342,
+                "type": "LIST_SUBSTRACT",
+                "name": "Sustracción de lista 1",
+                "state": "QUEUED",
+                "cancellable": false,
+                "message": "Pendiente de ejecución",
+                "owner": "myuser",
+                "created": "2014-05-20T10:23:04-0300",
+                "init": null,
+                "end": null,
+                "completed": 0,
+                "eta": null,
+                "request": "/myaccount/lists/123/substract",
+                "parameters": {
+                    "substractListIds": [2,3]
+                },
+                "result": null
+            }
+        }
  
 
 
 ### Sample [POST /{account}/lists/{id}/sample]
 Toma una muestra random de N contactos de una lista, creando una lista nueva.
+
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
@@ -332,120 +477,194 @@ Toma una muestra random de N contactos de una lista, creando una lista nueva.
     
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
+ 
++ Response 200  (application/json)
+
+        {
+            "url": "/myaccount/lists/1/sample",
+            "success" : true,
+            "task": {
+                "id": 556342,
+                "type": "LIST_SAMPLE",
+                "name": "Muestra de lista 1",
+                "state": "QUEUED",
+                "cancellable": false,
+                "message": "Pendiente de ejecución",
+                "owner": "myuser",
+                "created": "2014-05-20T10:23:04-0300",
+                "init": null,
+                "end": null,
+                "completed": 0,
+                "eta": null,
+                "request": "/myaccount/lists/123/sample",
+                "parameters": {
+                    "newListName": "Muestra de lista 1",
+                    "sampleSize": 1000
+                },
+                "result": null
+            }
+        }
 
  
-### Join [POST /{account}/lists/{id}/join]
+### Join [POST /{account}/lists/join]
 Une varias listas creando una nueva.
+
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
         + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
-        + listIds: [43,54,12] (array[], required) - Id de las listas para realizar la union.
+        + listIds: [2,3] (array[], required) - Id de las listas para realizar la union.
 
-
-    
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
+ 
++ Response 200  (application/json)
+
+        {
+            "url": "/myaccount/lists/join",
+            "success" : true,
+            "task": {
+                "id": 556342,
+                "type": "LIST_JOIN",
+                "name": "Unión de listas",
+                "state": "QUEUED",
+                "cancellable": false,
+                "message": "Pendiente de ejecución",
+                "owner": "myuser",
+                "created": "2014-05-20T10:23:04-0300",
+                "init": null,
+                "end": null,
+                "completed": 0,
+                "eta": null,
+                "request": "/myaccount/lists/join",
+                "parameters": {
+                    "newListName": "Unión de lista 2 y 3"
+                },
+                "result": null
+            }
+        }
+
             
-### Intersect [POST /{account}/lists/{id}/intersect]
+### Intersect [POST /{account}/lists/intersect]
 Genera una nueva lista con la intersección entre las listas seleccionadas.
 
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
         + newListName: Copia de Lista A (string, required) - Nombre de la nueva lista.
-        + listIds: [43,54,12] (array[], required) - Id de las listas para realizar la intersección.
+        + listIds: [2,3] (array[], required) - Id de las listas para realizar la intersección.
 
-
-    
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
  
-### Delete [POST /{account}/lists/{id}/delete]
-Elimina la lista y opcionalmente sus contactos, según la opción indicada
-+ Request (application/x-www-form-urlencoded)
++ Response 200  (application/json)
 
-    + Attributes
-        + deleteContacts: remove (enum[string], optional) - Indica que hacer con los contactos que coinciden con el criterio.
-            + Members
-                + `NONE`
-                + `ALL`
-                + `NOT_IN_OTHER_LISTS`
-    
-    + Headers
+        {
+            "url": "/myaccount/lists/intersect",
+            "success" : true,
+            "task": {
+                "id": 556342,
+                "type": "LIST_INTERSECT",
+                "name": "Intersección de listas",
+                "state": "QUEUED",
+                "cancellable": false,
+                "message": "Pendiente de ejecución",
+                "owner": "myuser",
+                "created": "2014-05-20T10:23:04-0300",
+                "init": null,
+                "end": null,
+                "completed": 0,
+                "eta": null,
+                "request": "/myaccount/lists/intersect",
+                "parameters": {
+                    "newListName": "Intersección de lista 2 y 3"
+                },
+                "result": null
+            }
+        }
 
-            X-Auth-Token: access_token
             
 ### Export [POST /{account}/lists/{id}/export]
 Exporta los contactos que pertenecen a la lista, según la opción indicada. Devuelve una tarea.
+
 + Request (application/x-www-form-urlencoded)
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
  
 + Response 201  (application/json)
 
         {
-          "href": "/testaccount/lists/1/export",
+          "href": "/myaccount/lists/1/export",
           "success": true,
           "task": {
             "id": 104615088,
             "type": "CONTACT_EXPORT_TASK",
-            "name": "Export Contacts test",
+            "name": "Exportación de contactos",
             "state": "QUEUED",
             "cancellable": true,
-            "message": "Pending execution",
-            "owner": "testaccount",
+            "message": "Pendiente de ejecución",
+            "owner": "myaccount",
             "created": "2017-03-06T13:27:43Z",
             "init": null,
             "end": null,
             "completed": 0,
             "eta": -1,
-            "request": "/testaccount/lists/1/export",
+            "request": "/myaccount/lists/1/export",
             "parameters": {
               "listId": 1,
               "state": null,
               "interestId": null,
               "fileName": "test-2017-03-06-10-27-43.csv"
             },
-            "result": null,
-            "fileName": "test-2017-03-06-10-27-43.csv"
+            "result": null
           }
         }
  
 # Group Contactos
 
-## Colección [/{account}/contacts{?q,offset,limit,sortby,sortdir}]
+## Colección [/{account}/contacts{?q,offset,limit,sortby,sortdir,filter%5Bstate%5D,filter%5Bdomain%5D,filter%5Binterest%5D,filter%5Blist%5D}]
 
 ### Listado y búsqueda [GET]
 
 + Parameters
-  + account: testaccount (string, required) - Nombre de la cuenta
-  + offset: 0 (number, optional) - Inicio de paginado
-  + limit: 20 (number, optional) - Cantidad de resultados
-  + q (optional) - Búsqueda por `email`
-  + state (optional) - Estado de los contactos
+    + account: testaccount (string, required) - Nombre de la cuenta
+    + offset: 0 (number, optional) - Inicio de paginado
+    + limit: 20 (number, optional) - Cantidad de resultados
+    + q (optional) - Búsqueda por `email`
+    + filter%5Bstate%5D (optional) - Estado de los contactos
         + Members
             + `active`
             + `unsubscribed`
             + `compained`
             + `bounced`
             + `inactive`
-  + domain (optional) - Dominio de los contactos.
-  + interest (optional) - Se pasa el ID.
-  + list (optional) - Se pasa el ID.
-  + sortby: email (enum[string], optional) - Tipo de ordenamiento
+    + filter%5Bdomain%5D (optional) - Filtrar resultados por dominio de email
+    + filter%5Binterest%5D (optional) - Filtrar resultados por Id de interés
+    + filter%5Blist%5D (optional) - Filtrar resultados por Id de lista
+    + sortby: email (enum[string], optional) - Tipo de ordenamiento
         + Members
             + `email`
             + `quality`
-  + sortdir: asc (enum[string], optional) - Sentido de ordenamiento
+    + sortdir: asc (enum[string], optional) - Sentido de ordenamiento
         + Members
             + `asc`
             + `desc`
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
 
 + Response 200 (application/json)
 
@@ -480,15 +699,16 @@ Exporta los contactos que pertenecen a la lista, según la opción indicada. Dev
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-     + email:  prueba@prueba.com (string, required) - Email del contacto, no se puede modificar.
-     + firstName : prueba (string, optional) - Nombre del contacto.
-     + lastName : prueba (string, optional) - Apellido del contacto.
-     + gender : M (enum[string], optional) - Sexo del contacto
+    
+        + email:  myemail@example.com (string, required) - Email del contacto, no se puede modificar.
+        + firstName: John (string, optional) - Nombre del contacto.
+        + lastName: Doe (string, optional) - Apellido del contacto.
+        + gender: M (enum[string], optional) - Sexo del contacto
             + Members
                 + `M`
                 + `F`
                 + ``
-     + language : es (enum[string], optional) - Idioma del contacto.
+        + language : es (enum[string], optional) - Idioma del contacto.
             + Members
                 + `de`
                 + `en`
@@ -497,42 +717,60 @@ Exporta los contactos que pertenecen a la lista, según la opción indicada. Dev
                 + `it`
                 + `pt`
                 + ``
-     + preferredFormat : HTML (enum[string], optional) - Formato preferido del contacto.
-            + Members
-                + `HTML`
-                + `TEXT`
-     + state : ACTIVE (enum[string], optional) - Estado del contacto.
-            + Members
-                + `ACTIVE`
-                + `BOUNCED`
-                + `UNSUBSCRIBED`
-                + `COMPLAINED`
-     + quality (number, optional) - Calificación del Contacto
-     + source : MANUAL (enum[string], optional) - Fuente de ingreso del contacto.
-            + Members
-                + `MANUAL`
-                + `OPTIN_FORM`
-                + `IMPORTED_CSV`
-                + `IMPORTED_YAHOO`
-                + `IMPORTED_GMAIL`
-                + `IMPORTED_HOTMAIL`
-                + `IMPORTED_EXCEL`
-                + `IMPORTED_MELI`
-                + `FORWARD`
-     + customFields (array[], optional) - Campos personalizados      
-     + lists (array[], optional) - 
-     + interests (array[], optional) -
+        + customFields (array[], optional) - Campos personalizados      
+        + lists (array[], optional) - Suscripciones a Listas
+        + interests (array[], optional) - Suscripciones a Intereses
+     
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
+
+
++ Response 200 (application/json)
+
+        {
+            "href": "/v2/myaccount/contacts",
+            "success": true,
+            "data": {
+                "id": 4829,
+                "email": "myemail@example.com",
+                "firstName": "John",
+                "lastName": "Doe",
+                "gender": "M",
+                "language": "es",
+                "preferredFormat": "HTML",
+                "source": "MANUAL",
+                "state": "ACTIVE",
+                "quality": 0,
+                "lastMailed": null,
+                "lastAction": null,
+                "created": "2017-07-05T19:05:40Z",
+                "lastModified": "2017-07-05T19:05:40Z",
+                "inactivated": null,
+                "lists": [],
+                "interests": [],
+                "customFields": []
+            }
+        }
+
+
 
 ## Elemento [/{account}/contacts/{id}]
 
 ### Obtener contacto [GET]
 Obtiene el contacto indicado.
+
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
 
 + Response 200 (application/json)
 
@@ -585,43 +823,53 @@ Obtiene el contacto indicado.
 
 ### Modificar contacto [PUT]
 Modifica el contacto indicado.
-+ Parameters
-    + account: testaccount (string, required)
-    + id: 1 (number, required)
-    
-+ Request (application/x-www-form-urlencoded)
+
++ Request
 
     + Attributes
-        + firstName : prueba (string, optional) - Nombre del contacto.
-        + lastName : prueba (string, optional) - Apellido del contacto.
-        + gender : M (enum[string], optional) - Sexo del contacto
-                + Members
-                    + `M`
-                    + `F`
-                    + ``
-        + language : es (enum[string], optional) - Idioma del contacto.
-                + Members
-                    + `de`
-                    + `en`
-                    + `es`
-                    + `fr`
-                    + `it`
-                    + `pt`
-                    + ``
-        + preferredFormat : HTML (enum[string], optional) - Formato preferido del contacto.
-                + Members
-                    + `HTML`
-                    + `TEXT`
-        
+    
+        + firstName: New name (string, optional) - Nombre del contacto.
+        + lastName (string, optional) - Apellido del contacto.
+        + gender: F (enum[string], optional) - Sexo del contacto
+            + Members
+                + `M`
+                + `F`
+                + ``
+        + language (enum[string], optional) - Idioma del contacto.
+            + Members
+                + `de`
+                + `en`
+                + `es`
+                + `fr`
+                + `it`
+                + `pt`
+                + ``
         + customFields (array[], optional) - Campos personalizados      
-        + lists (array[], optional) - 
-        + interests (array[], optional) -
+        + lists (array[], optional) - Suscripciones a Listas
+        + interests (array[], optional) - Suscripciones a Intereses
+
     + Headers
 
-        X-Auth-Token: access_token  
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
+
+
++ Response 200 (application/json)
+
+        {
+            "href": "/v2/myaccount/contacts",
+            "success": true,
+            "data": {
+                "id": 4829,
+                "firstName": "Joan",
+                "gender": "F"
+                
+            }
+        }
 
 ### Eliminar contacto [DELETE]
 Elimina el contacto indicado.
+
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
@@ -630,23 +878,38 @@ Elimina el contacto indicado.
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
+
++ Response 200 (application/json)
+
+        {
+            "href": "/v2/myaccount/contacts",
+            "success": true
+        }
     
-## Acción [/{account}/contacts/{id}/{action}]
+## Acciones  [/{account}/contacts/{id}/{action}]
+
+### Export [POST /{account}/contacts/export]
+Exporta los contactos segun los filtros enviados en el request. Devuelve una tarea.
 
 + Parameters
     + account: testaccount (string, required)
-    + id: 1 (number, required)
 
-### Export [POST /{account}/lists/{id}/export]
-Exporta los contactos segun los filtros enviados en el request. Devuelve una tarea.
 + Request (application/json)
 
-        {
-            "listId": 1,
-            "state": "ACTIVE",
-            "interestId": 1,
-        }
+    + Headers
+
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
+
+    + Body
+    
+            {
+                "listId": 1,
+                "state": "ACTIVE",
+                "interestId": 1,
+            }
  
 + Response 201  (application/json)
 
@@ -682,18 +945,29 @@ Exporta los contactos segun los filtros enviados en el request. Devuelve una tar
 ### Unsubscribe [POST /{account}/contacts/{id}/unsubscribe]
 Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
 
++ Parameters
+    + account: testaccount (string, required)
+    + id: 1 (number, required)
+    
++ Request
+
+    + Headers
+
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
+
 + Response 200 (application/json)
 
         {
-         "href": ".../contacts/1/unsubscribe",
-         "success": true
+            "href": "myaccount/contacts/1/unsubscribe",
+            "success": true
         }
         
 
 
 # Group Campañas
 
-## Campaigns List [/{account}/campaigns{?q,offset,limit,sortby,sortdir}]
+## Colección [/{account}/campaigns{?q,offset,limit,sortby,sortdir}]
 
 ### Listar todas las campañas [GET]
 
@@ -747,7 +1021,7 @@ Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-        + name: (string, required) - Nombre de la campaña
+        + name: Mi Nueva Campaña (string, required) - Nombre de la campaña
         + type (optional) - Tipo de campaña (default SIMPLE)
         + description (optional) - Descripcion de campaña
         + launchMode (enum[string], optional) - 
@@ -758,11 +1032,12 @@ Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
         + launch (optional) - Fecha de envio . para especificar un fecha de launch, launchMode debe ser SCHEDULED
         + tags (optional) - Tags de campaña
         + options (optional) - Opciones de la campaña.
-        + include (optional) - Include de la campaña.
+        + `include` (optional) - Include de la campaña.
         + exclude (optional) - Exlude de la campaña.
     
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 + Response 200 (application/json)
@@ -772,7 +1047,7 @@ Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
           "success": true,
           "data": {
             "id": 595,
-            "name": "tests campaign",
+            "name": "Mi Nueva Campaña",
             "description": "",
             "tags": [],
             "type": "SIMPLE",
@@ -818,69 +1093,76 @@ Marca el contacto indicado como desuscripto, esta acción no puede deshacerse.
 ### Obtener Campaña [GET]
 Obtiene la campaña indicada.
 
++ Request
+
+    + Headers
+
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
+            
 + Response 200 (application/json)
 
-    {
-      "href": "/v2/testaccount/campaigns/1",
-      "success": true,
-      "data": {
-        "id": 594,
-        "name": "Test",
-        "description": "",
-        "tags": [],
-        "type": "SIMPLE",
-        "state": "DRAFT",
-        "launchMode": "NOW",
-        "launchDate": null,
-        "archived": null,
-        "created": "2017-01-26T21:53:13Z",
-        "lastModified": "2017-01-26T21:53:13Z",
-        "recipients": 0,
-        "thumbnail": "https://thmb.myperfit.com/3835/_cpg/1/thumb-1",
-        "metrics": null,
-        "options": {
-          "SHARE_FACEBOOK": "1",
-          "GA_CAMPAIGN_NAME": "Test",
-          "GOOGLE_ANALYTICS": "0",
-          "SHARE_LINKEDIN": "1",
-          "TRACK_LINKS": "0",
-          "USE_FOOTER": "0",
-          "VIEW_ONLINE": "1",
-          "SHARE_TWITTER": "1",
-          "SHARE_FORWARD": "1",
-          "USE_HEADER": "0"
-        },
-        "include": {
-          "campaigns": [
-            {
-              "id": 2,
-              "action": "SENT"
-            }
-          ]
-        },
-        "exclude": {
-          "campaigns": [
-            {
-              "id": 2,
-              "action": "OPENED"
-            }
-          ]
-        },
-        "contents": [
-          {
-            "id": 507,
-            "type": "HTML",
-            "subject": "Prueba 1234",
-            "from": "user@email.com",
-            "fromName": "user",
-            "replyTo": "user@email.com",
-            "replyToName": "user",
-            "unsubscribeText": "prueba text",
-            "thumbnail": "https://thmb.myperfit.com/3835/_cpg/1/thumb-1"
+        {
+          "href": "/v2/testaccount/campaigns/1",
+          "success": true,
+          "data": {
+            "id": 594,
+            "name": "Test",
+            "description": "",
+            "tags": [],
+            "type": "SIMPLE",
+            "state": "DRAFT",
+            "launchMode": "NOW",
+            "launchDate": null,
+            "archived": null,
+            "created": "2017-01-26T21:53:13Z",
+            "lastModified": "2017-01-26T21:53:13Z",
+            "recipients": 0,
+            "thumbnail": "https://thmb.myperfit.com/3835/_cpg/1/thumb-1",
+            "metrics": null,
+            "options": {
+              "SHARE_FACEBOOK": "1",
+              "GA_CAMPAIGN_NAME": "Test",
+              "GOOGLE_ANALYTICS": "0",
+              "SHARE_LINKEDIN": "1",
+              "TRACK_LINKS": "0",
+              "USE_FOOTER": "0",
+              "VIEW_ONLINE": "1",
+              "SHARE_TWITTER": "1",
+              "SHARE_FORWARD": "1",
+              "USE_HEADER": "0"
+            },
+            "include": {
+              "campaigns": [
+                {
+                  "id": 2,
+                  "action": "SENT"
+                }
+              ]
+            },
+            "exclude": {
+              "campaigns": [
+                {
+                  "id": 2,
+                  "action": "OPENED"
+                }
+              ]
+            },
+            "contents": [
+              {
+                "id": 507,
+                "type": "HTML",
+                "subject": "Prueba 1234",
+                "from": "user@email.com",
+                "fromName": "user",
+                "replyTo": "user@email.com",
+                "replyToName": "user",
+                "unsubscribeText": "prueba text",
+                "thumbnail": "https://thmb.myperfit.com/3835/_cpg/1/thumb-1"
+              }
+            ]
           }
-        ]
-      }
-    }
+        }
 
 
 ### Modificar Campaña [PUT]   
@@ -889,7 +1171,7 @@ Modifica la info de la campaña indicada.  En estado draft puede modificarse tod
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-        + name: (string, optional) - Nombre de la campaña
+        + name: Nuevo nombre (string, optional) - Nombre de la campaña
         + description (optional) - Descripcion de campaña
         + launchMode (enum[string], optional) - 
                 + Default: `NOW`
@@ -899,12 +1181,28 @@ Modifica la info de la campaña indicada.  En estado draft puede modificarse tod
         + launch (optional) - Fecha de envio . para especificar un fecha de launch, launchMode debe ser SCHEDULED
         + tags (optional) - Tags de campaña
         + options (optional) - Opciones de la campaña.
-        + include (optional) - Include de la campaña.
+        + `include` (optional) - Include de la campaña.
         + exclude (optional) - Exlude de la campaña.
-     + Headers
 
+    + Headers
+
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
-### Eliminar Campaña [DELETE]   
+
++ Response 200 (application/json)
+
+        {
+          "href": "/v2/testaccount/campaigns/1",
+          "success": true,
+          "data": {
+            "id": 594,
+            "name": "Nuevo nombre",
+      
+          }
+        }
+
+
+### Eliminar Campaña [DELETE]
 Elimina la campañas indicada.
 Sólo pueden eliminarse campañas en estado DRAFT.
 
@@ -912,8 +1210,18 @@ Sólo pueden eliminarse campañas en estado DRAFT.
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
-## Acción [/{account}/contacts/{id}/{action}]
+
++ Response 200 (application/json)
+
+        {
+          "href": "/v2/testaccount/campaigns/1",
+          "success": true
+        }            
+        
+
+## Acciones [/{account}/campaigns/{id}/{action}]
 
 + Parameters
     + account: testaccount (string, required)
@@ -926,8 +1234,51 @@ Verifica que la campaña cumpla con todos los requisitos para ser enviada. Devue
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
-            
+
++ Response 200 (application/json)
+
+        {
+          "href": "/v2/testaccount/campaigns/1",
+          "success": true,
+          "data": {
+                "valid": false,
+                "tests": {
+                    "launchDate": {
+                        "valid": true,
+                        "message": "La campaña se enviará de inmediato",
+                        "errors": [],
+                        "warnings": []
+                    },
+                    "recipients": {
+                        "valid": true,
+                        "message": "Los destinatarios seleccionados son válidos. La cantidad de destinatarios se calculará al momento del envío.",
+                        "errors": [],
+                        "warnings": []
+                    },
+                    "contents": {
+                        "valid": true,
+                        "message": "El contenido está completo y es válido.",
+                        "errors": [],
+                        "warnings": []
+                    },
+                    "account": {
+                        "valid": false,
+                        "message": null,
+                        "errors": [
+                            {
+                                "code": "BLOCKED_CONTACTS_EXCEEDED",
+                                "message": "Se superó el límite de contactos del plan contratado. Debes contratar un plan mayor para poder enviar.",
+                                "moreInfo": null
+                            }
+                        ],
+                        "warnings": []
+                    }
+                }
+          }
+        }   
+
 ### Launch [POST /{account}/campaigns/{id}/launch]
 Marca la campañas indicada como pendiente de envío. Sólo aplica para campañas en estado DRAFT
 
@@ -935,6 +1286,7 @@ Marca la campañas indicada como pendiente de envío. Sólo aplica para campaña
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
             
 ### Stop [POST /{account}/campaigns/{id}/stop]
@@ -944,22 +1296,22 @@ Detiene la campaña indicada, volviéndola a estado DRAFT. La campaña debía es
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 ### Duplicate [POST /{account}/campaigns/{id}/duplicate]
 Duplica la campaña indicada.
+
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-        + name:  (string, required) - Nombre de la nueva Campaña.
+        + name: Copia de campaña  (string, required) - Nombre de la nueva Campaña.
+        
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
-+ Request (application/x-www-form-urlencoded)
-
-    + Headers
-
-            X-Auth-Token: access_token
+            
 
 ### Archive [POST /{account}/campaigns/{id}/archive]
 Archiva la campaña indicada. Sólo pueden archivarse las campañas en estado SENT y CANCELLED.
@@ -968,6 +1320,7 @@ Archiva la campaña indicada. Sólo pueden archivarse las campañas en estado SE
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 ### Unarchive [POST /{account}/campaigns/{id}/unarchive]
@@ -977,6 +1330,7 @@ Desarchiva la campaña indicada.
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 ### Enviar Test [POST /{account}/campaigns/{id}/contents/{idContent}/sendtest]
@@ -992,6 +1346,7 @@ Envía un mail de prueba del contenido especificado. Se indican los emails a usa
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 ## Contenido [/{account}/contacts/{id}/contents]
@@ -1012,14 +1367,16 @@ Crea un nuevo contenido para la campaña especificada.
                 + Members
                     + `HTML` - Enviar Campaña Ahora.
                     + `EDDIE` - Enviar Campaña Programada.
-        + subject: (string, optional) -
-        + from: (string, optional) - 
-        + fromName: (string, optional) - 
-        + replyTo: (string, optional) - 
-        + replyToAddress: (string, optional) - 
-        + unsubscribeText: (string, optional) -
+        + subject (string, optional) -
+        + from (string, optional) - 
+        + fromName (string, optional) - 
+        + replyTo (string, optional) - 
+        + replyToAddress (string, optional) - 
+        + unsubscribeText (string, optional) -
+        
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 ### Obtener Contenido [GET /{account}/campaigns/{id}/contents/{idContent}]
@@ -1037,7 +1394,7 @@ Muestra la informacion del contenido indicado.
           "replyTo": "",
           "replyToName": "",
           "unsubscribeTest": "...",
-          "thumbnail: "..."
+          "thumbnail": "..."
         }
 
 ### Modificar Contenido [PUT /{account}/campaigns/{id}/contents/{idContent}]
@@ -1046,14 +1403,16 @@ Modifica la info del contenido indicado. Sólo pueden modificarse contenidos de 
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-        + subject: (string, optional) -
-        + from: (string, optional) - 
-        + fromName: (string, optional) - 
-        + replyTo: (string, optional) - 
-        + replyToAddress: (string, optional) - 
-        + unsubscribeText: (string, optional) -
+        + subject (string, optional) -
+        + from (string, optional) - 
+        + fromName (string, optional) - 
+        + replyTo (string, optional) - 
+        + replyToAddress (string, optional) - 
+        + unsubscribeText (string, optional) -
+        
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 
@@ -1079,6 +1438,7 @@ Muestra el contenido del tipo indicado. Puede ser html, txt o json (en caso de s
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 ### Modificar Cuerpo del Contenido [PUT /{account}/campaigns/{id}/contents/{idContent}.{type}]
@@ -1088,6 +1448,7 @@ Modifica el contenido del tipo indicado. Puede ser html, txt o json (en caso de 
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 
@@ -1107,42 +1468,42 @@ Muestra las métricas de la campaña indicada.
 
 + Response 200 (application/json)
 
-{
-    "href": ".../campaigns/1/metrics",
-    "success": true,
-    "data": {
-    "sent": 1000,
-    "sentP": 100,
-    "delivered": 998,
-    "deliveredP": 99.8,
-    "opened": 200,
-    "openedP": 20,
-    "openedT": 1234,
-    "viewsOnline": 12,
-    "clicked": 50,
-    "clickedP": 5,
-    "clickedT": 67,
-    "ctor": 14, 
-    "converted": 1,
-    "convertedP": 0.1
-    "bounced":
-    "bouncedP":
-    "bouncedHard":
-    "bouncedHardP":
-    "bouncedSoft":
-    "bouncedSoftP":
-    "complained":2
-    "complainedP":0.02
-    "unsubscribed":3
-    "unsubscribedP":0.03
-    "shared": 23
-    "sharedOpened": 110
-    "sharedClicked": 23
-}
-}
+        {
+            "href": ".../campaigns/1/metrics",
+            "success": true,
+            "data": {
+            "sent": 1000,
+            "sentP": 100,
+            "delivered": 998,
+            "deliveredP": 99.8,
+            "opened": 200,
+            "openedP": 20,
+            "openedT": 1234,
+            "viewsOnline": 12,
+            "clicked": 50,
+            "clickedP": 5,
+            "clickedT": 67,
+            "ctor": 14, 
+            "converted": 1,
+            "convertedP": 0.1
+            "bounced":
+            "bouncedP":
+            "bouncedHard":
+            "bouncedHardP":
+            "bouncedSoft":
+            "bouncedSoftP":
+            "complained":2
+            "complainedP":0.02
+            "unsubscribed":3
+            "unsubscribedP":0.03
+            "shared": 23
+            "sharedOpened": 110
+            "sharedClicked": 23
+        }
 
 
-### Obtener contactos segun Accion. [GET /{account}/campaigns/{id}/actions]
+
+### Obtener contactos segun Accion. [GET /{account}/campaigns/{id}/actions{?q,offset,limit,sortby,sortdir,filter%5Btype%5D}]
 Muestra las acciones realizadas en la campaña indicada.
 
 + Parameters
@@ -1156,7 +1517,7 @@ Muestra las acciones realizadas en la campaña indicada.
         + Members
             + `asc`
             + `desc`
-   + type (enum[string], required) - 
+   + filter%5Btype%5D (enum[string], required) - 
             + Members
                 + `ALL` - Si se está haciendo un reporte JSON solo es válido all si se aplicó la opción de búsqueda por email.
                 + `SENT` -      
@@ -1182,7 +1543,7 @@ Muestra las métricas (opens, clicks) por hora de la campaña indicada.
 
 # Group Intereses
 
-## Intereses List [/{account}/interests]
+## Intereses List [/{account}/interests{?q,offset,limit,sortby,sortdir}]
 
 ### Listar todas los Intereses [GET]
 + Parameters
@@ -1201,38 +1562,43 @@ Muestra las métricas (opens, clicks) por hora de la campaña indicada.
             + `desc`
 
 ### Crear un nuevo Interes [POST]
+
 + Parameters
   + account: testaccount (string, required) - Nombre de la cuenta
+  
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-      + name:  (string, required) - Nombre del interes.
-      + description:  (string, optional) - Descripcion.
-      + expirationDays:  (string, optional) - Dias de expiracion.
+      + name  (string, required) - Nombre del interes.
+      + description  (string, optional) - Descripcion.
+      + expirationDays  (string, optional) - Dias de expiracion.
+    
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
-## Elemento
+## Elemento [/{account}/interests/{id}]
+
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
 
-### Obtener un Interes [POST /{account}/interests/{id}]
+### Obtener un Interes [GET /{account}/interests/{id}]
 
 
 + Response 200 (application/json)
     
-    {
-      "href": ".../interests/12",
-      "success": true,
-      "data":{
-            "id": 12,
-            "name": "Interes A",
-            "description": "",
-            "expirationDays": 0
+        {
+          "href": ".../interests/12",
+          "success": true,
+          "data":{
+                "id": 12,
+                "name": "Interes A",
+                "description": "",
+                "expirationDays": 0
+            }
         }
-    }
 
 
 
@@ -1243,12 +1609,14 @@ Modifica el interés indicado.
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-        + name:  (string, required) - Nombre del interes.
-        + description:  (string, optional) - Descripcion.
-        + expirationDays:  (string, optional) - Dias de expiracion.
+        + name  (string, required) - Nombre del interes.
+        + description  (string, optional) - Descripcion.
+        + expirationDays  (string, optional) - Dias de expiracion.
+        
     + Headers
 
-        X-Auth-Token: access_token
+            Authorization: Bearer API_KEY
+            X-Auth-Token: access_token
 
 ### Eliminar un Interes [DELETE /{account}/interests/{id}]
 Elimina el interes.
@@ -1261,10 +1629,12 @@ Elimina el interes.
 
 ### Export [POST /{account}/lists/{id}/export]
 Exporta los contactos que tienen ese interes, según la opción indicada. Devuelve una tarea.
+
 + Request (application/x-www-form-urlencoded)
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
  
 + Response 201  (application/json)
@@ -1301,7 +1671,7 @@ Exporta los contactos que tienen ese interes, según la opción indicada. Devuel
 
 # Group Campos Personalizados
 
-## Fields List [/{account}/fields]
+## Fields List [/{account}/fields{?q,offset,limit,sortby,sortdir}]
 
 ### Listar todas los Campos Personalizados [GET]
 + Parameters
@@ -1317,17 +1687,17 @@ Exporta los contactos que tienen ese interes, según la opción indicada. Devuel
         + Members
             + `asc`
             + `desc`
-  + filter : filter[custom]=true (array[string], optional) - Filtrar por tipo.
-        
+
 
 ### Crear un nuevo Campo Personalizado  [POST]
 + Parameters
   + account: testaccount (string, required) - Nombre de la cuenta.
-  + Request (application/x-www-form-urlencoded)
+  
++ Request (application/x-www-form-urlencoded)
 
     + Attributes
-        + name:  (string, required) - Nombre del campo personalizado.
-        + tag:  (string, optional) - Descripcion.
+        + name  (string, required) - Nombre del campo personalizado.
+        + tag  (string, optional) - Descripcion.
         + format (enum[string], optional) - 
                 + Default: `TEXT`
                 + Members
@@ -1336,28 +1706,31 @@ Exporta los contactos que tienen ese interes, según la opción indicada. Devuel
                     + `DATE` 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
-## Elemento
+            
+## Elemento [/{account}/fields/{id}]
+
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
 
-### Obtener un Campo Personalizado [POST /{account}/fields/{id}]
+### Obtener un Campo Personalizado [GET /{account}/fields/{id}]
 
 
 + Response 200 (application/json)
     
-    {
-    "href": ".../fields/1"
-    "success": true,
-    "data:{
-            "id: 11,
-            "name:"Domicilio",
-            "tag: "ADDR",
-            "format: "TEXT",
-            "custom: true
+        {
+        "href": ".../fields/1"
+        "success": true,
+        "data:{
+                "id: 11,
+                "name:"Domicilio",
+                "tag: "ADDR",
+                "format: "TEXT",
+                "custom: true
+            }
         }
-    }
 
 
 
@@ -1369,11 +1742,14 @@ Modifica el interés indicado.
 + Request (application/x-www-form-urlencoded)
 
     + Attributes
-        + name:  (string, required) - Nombre del campo personalizado.
-        + tag:  (string, optional) - Descripcion.
+        + name  (string, required) - Nombre del campo personalizado.
+        + tag  (string, optional) - Descripcion.
+        
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
+            
 ### Eliminar un Campo Personalizado [DELETE /{account}/fields/{id}]
 Elimina un campo personalizado.
 
@@ -1381,19 +1757,18 @@ Elimina un campo personalizado.
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 # Group Tareas
 
-## Fields tasks [/{account}/tasks]
-
-### Listar todas las tareas [GET]
+### Listar todas las tareas [GET /{account}/tasks{?q,offset,limit,sortby,sortdir}]
 
 + Parameters
   + account: testaccount (string, required) - Nombre de la cuenta
   + offset: 0 (number, optional) - Inicio de paginado
   + limit: 5 (number, optional) - Cantidad de resultados
-  + name (optional) -  Búsqueda exacta, puede utilizarse el wildcard *
+  + q (optional) -  Búsqueda exacta, puede utilizarse el wildcard *
   + sortby: created (enum[string], optional) - Tipo de ordenamiento
         + Members
             + `created`
@@ -1401,41 +1776,39 @@ Elimina un campo personalizado.
         + Members
             + `asc`
             + `desc`
-  + filter : filter[state]=todos (array[string], optional) - Filtrar por estado o tipo. 'active' o 'finished'
 
-## Elemento
+
+### Obtener una Tarea [GET /{account}/tasks/{id}]
+
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
 
-### Obtener una Tarea [GET /{account}/tasks/{id}]
-
-
 + Response 200 (application/json)
     
-    {
-    "href": "/testaccount/tasks/1",
-    "success": true,
-    "data":{
-        "id": 1,
-        "type": "LIST_CLEAN",
-        "name": "Limpieza de lista A",
-        "state": "PROCESSING",
-        "cancellable": false,
-        "message": "Limpiando lista",
-        "created": "2014-05-20T10:22:04-0300",
-        "owner": "testaccount",
-        "init": "2014-05-20T10:23:04-0300",
-        "end": null,
-        "completed": 0.45,
-        "eta": 300,
-        "request": "/testaccount/lists/1/clean",
-        "parameters": {"bounced": true, 
-        "complained": true, 
-        "unsubscribed": true},
-        "result": null
-    }
-}
+        {
+            "href": "/testaccount/tasks/1",
+            "success": true,
+            "data":{
+                "id": 1,
+                "type": "LIST_CLEAN",
+                "name": "Limpieza de lista A",
+                "state": "PROCESSING",
+                "cancellable": false,
+                "message": "Limpiando lista",
+                "created": "2014-05-20T10:22:04-0300",
+                "owner": "testaccount",
+                "init": "2014-05-20T10:23:04-0300",
+                "end": null,
+                "completed": 0.45,
+                "eta": 300,
+                "request": "/testaccount/lists/1/clean",
+                "parameters": {"bounced": true, 
+                "complained": true, 
+                "unsubscribed": true},
+                "result": null
+            }
+        }
 
 ### Cancelar una Tarea [POST /{account}/tasks/{id}/cancel]
 
@@ -1445,14 +1818,15 @@ La tarea sólo puede ser cancelada por el usuario owner o por un usuario con el 
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
             
 + Response 200 (application/json)
 
-    {
-        "href" : "/testaccount/tasks/1",
-        "success" : true,
-    }
+        {
+            "href" : "/testaccount/tasks/1",
+            "success" : true,
+        }
     
     
 # Group Importacion
@@ -1476,7 +1850,7 @@ Importa contactos masivamente. Es una acción asincrónica.
             "stringDelimiter": "'",
         }
 
-### Importar Contactos desde Archivo[POST]
+### Importar Contactos desde Archivo [POST]
 Importa contactos masivamente. Es una acción asincrónica. Se requiere hacer el upload del archivo antes. 
 
 + Request (application/json)      
@@ -1547,57 +1921,58 @@ El formato del POST debe ser en multipart/form-data y el nombre del part debe se
 
 
 ### Crear un nuevo Formulario  [POST]
+
 + Parameters
-  + account: testaccount (string, required) - Nombre de la cuenta.
-  + name:  (string, required) 
-  + lists:  (array[int], required) 
-  + form:  (Form, required)
-  + confirmation:  (Confirmation, required) -
-  + description (string, optional) - Descripcion.
+    + account: testaccount (string, required) - Nombre de la cuenta.
+    + name  (string, required) 
+    + lists  (array[int], required) 
+    + form  (Form, required)
+    + confirmation  (Confirmation, required) -
+    + description (string, optional) - Descripcion.
 
 + Request (application/json)
 
-
-    {
-        "name": "test integracion2",
-        "description": "asdasdas",
-        "lists": ["229", "307"],
-        "form": {
-            "title": "SUSCRIPCIÓN",
-            "text": "Completa tus datos para suscribirte",
-            "interestsText": "",
-            "buttonText": "ENVIAR",
-            "footer": "",
-            "successMessage": "¡Muchas gracias! Recibirás un email para validar tu casilla.",
-            "redirect": "",
-            "fields": [{
-                "id": 3,
-                "displayName": "Email",
-                "required": true
-            }, {
-                "id": 1,
-                "displayName": "Nombre",
-                "required": false
-            }, {
-                "id": 2,
-                "displayName": "Apellido",
-                "required": false
-            }],
-            "interests": []
-        },
-        "confirmation": {
-            "fromAddress": "test@test.com.ar",
-            "fromName": "test",
-            "subject": "Confirma tu suscripción",
-            "title": "Confirmación",
-            "header": "Para validar tu casilla y confirmar la suscripción, haz click aquí:",
-            "linkText": "CONFIRMAR",
-            "footer": "Si nunca te suscribiste por favor ignora ese mensaje.",
-            "redirect": "https://optin.myperfit.com/confirmed"
+        {
+            "name": "test integracion2",
+            "description": "asdasdas",
+            "lists": ["229", "307"],
+            "form": {
+                "title": "SUSCRIPCIÓN",
+                "text": "Completa tus datos para suscribirte",
+                "interestsText": "",
+                "buttonText": "ENVIAR",
+                "footer": "",
+                "successMessage": "¡Muchas gracias! Recibirás un email para validar tu casilla.",
+                "redirect": "",
+                "fields": [{
+                    "id": 3,
+                    "displayName": "Email",
+                    "required": true
+                }, {
+                    "id": 1,
+                    "displayName": "Nombre",
+                    "required": false
+                }, {
+                    "id": 2,
+                    "displayName": "Apellido",
+                    "required": false
+                }],
+                "interests": []
+            },
+            "confirmation": {
+                "fromAddress": "test@test.com.ar",
+                "fromName": "test",
+                "subject": "Confirma tu suscripción",
+                "title": "Confirmación",
+                "header": "Para validar tu casilla y confirmar la suscripción, haz click aquí:",
+                "linkText": "CONFIRMAR",
+                "footer": "Si nunca te suscribiste por favor ignora ese mensaje.",
+                "redirect": "https://optin.myperfit.com/confirmed"
+            }
         }
-    }
 
 ## Elemento
+
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
@@ -1606,44 +1981,45 @@ El formato del POST debe ser en multipart/form-data y el nombre del part debe se
 Obtiene el formulario solicitado.
 
 + Response 200 (application/json)
-{
-        "name": "test integracion2",
-        "description": "asdasdas",
-        "lists": ["229", "307"],
-        "form": {
-            "title": "SUSCRIPCIÓN",
-            "text": "Completa tus datos para suscribirte",
-            "interestsText": "",
-            "buttonText": "ENVIAR",
-            "footer": "",
-            "successMessage": "¡Muchas gracias! Recibirás un email para validar tu casilla.",
-            "redirect": "",
-            "fields": [{
-                "id": 3,
-                "displayName": "Email",
-                "required": true
-            }, {
-                "id": 1,
-                "displayName": "Nombre",
-                "required": false
-            }, {
-                "id": 2,
-                "displayName": "Apellido",
-                "required": false
-            }],
-            "interests": []
-        },
-        "confirmation": {
-            "fromAddress": "test@test.com.ar",
-            "fromName": "test",
-            "subject": "Confirma tu suscripción",
-            "title": "Confirmación",
-            "header": "Para validar tu casilla y confirmar la suscripción, haz click aquí:",
-            "linkText": "CONFIRMAR",
-            "footer": "Si nunca te suscribiste por favor ignora ese mensaje.",
-            "redirect": "https://optin.myperfit.com/confirmed"
+
+        {
+            "name": "test integracion2",
+            "description": "asdasdas",
+            "lists": ["229", "307"],
+            "form": {
+                "title": "SUSCRIPCIÓN",
+                "text": "Completa tus datos para suscribirte",
+                "interestsText": "",
+                "buttonText": "ENVIAR",
+                "footer": "",
+                "successMessage": "¡Muchas gracias! Recibirás un email para validar tu casilla.",
+                "redirect": "",
+                "fields": [{
+                    "id": 3,
+                    "displayName": "Email",
+                    "required": true
+                }, {
+                    "id": 1,
+                    "displayName": "Nombre",
+                    "required": false
+                }, {
+                    "id": 2,
+                    "displayName": "Apellido",
+                    "required": false
+                }],
+                "interests": []
+            },
+            "confirmation": {
+                "fromAddress": "test@test.com.ar",
+                "fromName": "test",
+                "subject": "Confirma tu suscripción",
+                "title": "Confirmación",
+                "header": "Para validar tu casilla y confirmar la suscripción, haz click aquí:",
+                "linkText": "CONFIRMAR",
+                "footer": "Si nunca te suscribiste por favor ignora ese mensaje.",
+                "redirect": "https://optin.myperfit.com/confirmed"
+            }
         }
-    }
 
 ### Modificar un Formulario [PUT /{account}/optins/{id}]
 
@@ -1661,6 +2037,7 @@ Modifica el interés indicado.
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 ### Eliminar un Formulario [DELETE /{account}/optins/{id}]
@@ -1670,6 +2047,7 @@ Elimina un formulario.
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
             
 # Group Plantillas
@@ -1710,18 +2088,21 @@ Elimina un formulario.
         + htmlFile (string, optional) -  (sólo para type=HTML)
         + htmlUrl (string, optional) -   (sólo para type=HTML)
         + htmlRaw (string, optional) -   (sólo para type=HTML)
+        
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 + Request (application/json)
 
-    {
-        "type": "EDDIE",
-        "name": "Mi Plantilla Eddie"
-    }
+        {
+            "type": "EDDIE",
+            "name": "Mi Plantilla Eddie"
+        }
 
 ## Elemento
+
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
@@ -1731,18 +2112,18 @@ Devuelve el template o carpeta indicado
 
 + Response 200 (application/json)
 
-{
-    "href": ".../templates/1301931536/1301931456"
-    "success": true,
-    "data": {
-        "id": "/1301931536/1301931456",
-        "type": "HTML",
-        "name": "Mi Plantilla HTML",
-        "location": "/1301931536/",
-        "created": "2015-12-02T10:23:12+0000",
-        "thumbnail": "http://myperfit.com/../thumb.png"
-    }
-}
+        {
+            "href": ".../templates/1301931536/1301931456"
+            "success": true,
+            "data": {
+                "id": "/1301931536/1301931456",
+                "type": "HTML",
+                "name": "Mi Plantilla HTML",
+                "location": "/1301931536/",
+                "created": "2015-12-02T10:23:12+0000",
+                "thumbnail": "http://myperfit.com/../thumb.png"
+            }
+        }
 
 ### Obtener el contenido una Plantilla [GET /{account}/templates/{id}.(type)]
 
@@ -1777,6 +2158,7 @@ Modifica la plantilla indicada.
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 ### Eliminar una Plantilla [DELETE /{account}/templates/{id}]
@@ -1786,13 +2168,14 @@ Elimina una plantilla.
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
-# Group Imagenes
+# Group Imágenes
 
 ## Fields images [/{account}/images]
 
-### Listar todas las Imagenes/Carpetas [GET]
+### Listar todas las Imagenes/Carpetas [GET /{account}/images/{folder}]
 Devuelve el listado de imágenes y carpetas
 
 + Parameters
@@ -1818,7 +2201,7 @@ Devuelve el listado de imágenes y carpetas
         
 
 
-### Subir una nueva imagen o Crear Carpeta  [POST]
+### Subir una nueva imagen o Crear Carpeta  [POST /{account}/images/{folder}]
 -imagen Local
 Si se está subiendo una imagen local se debe usar Content-Type:multipart/form-data, con la imagen en el campo image, indicando también el type y opcionalmente el name
 -imagen Remota
@@ -1839,40 +2222,44 @@ Para crear una carpeta sólo hay que indicar contenido application/json o applic
         + maxWidth (integer, optional) - Ancho máximo al cual se hará un resize, manteniendo aspecto
         + maxWidth (integer, optional) - Alto máximo al cual se hará un resize, manteniendo aspecto
         + overwrite : false (boolean, optional) - Indica si se pisa la imagen en caso de existir, no aplica para carpetas
+        
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 + Request (application/json)
 
-    {
-        "type": "IMAGE",
-        "name": "myimage.png"
-    }
+        {
+            "type": "IMAGE",
+            "name": "myimage.png"
+        }
 
 
 ## Elemento
+
 + Parameters
     + account: testaccount (string, required)
     + id: 1 (number, required)
 
 ### Obtener una Imagen [GET /{account}/templates/{id}]
 Devuelve la información de una imagen o carpeta. Para el caso de las carpetas, el get individual no aplica dado que siempre se trae un listado.
+
 + Response 200 (application/json)
 
-{
-    "href": ".../images"
-    "success": true,
-    "data": {
-        "id": "/imagen2.png",
-        "type": "IMAGE",
-        "name": "imagen2.png",
-        "location": "/",
-        "created": "2015-12-02T10:23:12+0000",
-        "thumbnail": "http://myperfit.com/../_th_imagen2.png",
-        "public": "http://cdn.myperfit.com/../imagen3.png"
-    }
-}
+        {
+            "href": ".../images"
+            "success": true,
+            "data": {
+                "id": "/imagen2.png",
+                "type": "IMAGE",
+                "name": "imagen2.png",
+                "location": "/",
+                "created": "2015-12-02T10:23:12+0000",
+                "thumbnail": "http://myperfit.com/../_th_imagen2.png",
+                "public": "http://cdn.myperfit.com/../imagen3.png"
+            }
+        }
 
 
 ### Modificar una Imagen/Carpeta [PUT /{account}/templates/{id}]
@@ -1884,8 +2271,10 @@ Modifica la información de una imagen o carpeta. Renombra o mueve una imagen o
     + Attributes
         + name (string, optional) - Nuevo nombre en caso de querer renombrar.
         + location (string, optional) - Nueva ubicación en caso de querer mover.
+        
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
 
 ### Eliminar una Imagen/Carpeta [DELETE /{account}/templates/{id}]
@@ -1896,4 +2285,5 @@ En el caso de las carpetas, se elimina la carpeta con todo su contenido
 
     + Headers
 
+            Authorization: Bearer API_KEY
             X-Auth-Token: access_token
